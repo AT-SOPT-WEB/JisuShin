@@ -1,0 +1,33 @@
+body {
+  margin-left: 20px;
+}
+
+p {
+  font-size: 20px;
+}
+
+h1 {
+  display: inline-block;
+  color: deeppink;
+  background-color: black;
+}
+
+li {
+  display: block;
+  border: 1px solid black;
+  padding: 5px 10px;
+  margin-bottom: 10px;
+  width: fit-content;
+}
+
+li:first-child {
+  background-color: rgb(255, 206, 234);
+}
+
+li:nth-child(2) {
+  color: rgb(255, 89, 142);
+}
+
+li:last-child {
+  font-weight: 800;
+}
