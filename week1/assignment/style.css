@@ -192,12 +192,12 @@ section {
 .card:hover {
   transform: translateY(-5px) scale(1.03);
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-  background-color: #f6faf6;
+  background-color: #e3eee3;
 }
 
 .card-img {
   width: 100%;
-  aspect-ratio: 3 / 4;
+  aspect-ratio: 1 / 1.2;
   object-fit: cover;
   border-radius: 3px;
   margin-bottom: 10px;
@@ -226,4 +226,14 @@ section {
 .card i:hover {
   color: #67c06a;
   transform: scale(1.2);
+}
+
+.footer {
+  padding: 10px;
+  background: #2a2a2a;
+  color: #ffffff;
+  font-size: 0.8rem;
+  text-align: center;
+  line-height: 2.0;
+  margin-top: 200px;
 }
