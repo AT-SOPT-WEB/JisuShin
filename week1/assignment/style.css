@@ -1,11 +1,45 @@
+/* 루트 변수 설정 */
+:root {
+  --color-primary: #5ebfdd;
+  --color-secondary: #67c06a;
+  --color-background: #fefcf3;
+  --color-text: #222222;
+  --color-white: #ffffff;
+  --color-dark: #24272b;
+  --color-shadow: rgba(0, 0, 0, 0.1);
+
+  --font-xsmall: 0.8rem;
+  --font-small: 1.0rem;
+  --font-medium: 1.2rem;
+  --font-large: 1.4rem;
+  --font-xlarge: 2rem;
+}
+
+/* Pretendard 폰트 불러오기 */
+@font-face {
+  font-family: 'Pretendard';
+  src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Pretendard';
+  src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Bold.woff') format('woff');
+  font-weight: bold;
+  font-style: normal;
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
+/* 기본 폰트 설정 */
 body {
-  background-color: #5ebfdd;
+  font-family: 'Pretendard', sans-serif;
+  background-color: var(--color-primary);
 }
 
 /* 헤더 */
@@ -18,7 +52,7 @@ header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #fefcf3;
+  background-color: var(--color-background);
   z-index: 10;
 }
 
@@ -28,19 +62,19 @@ header .menu-bar {
   flex: 1;
   display: flex;
   align-items: center;
-  font-size: 35px;
-  color: #5ebfdd;
+  font-size: var(--font-xlarge);
+  color: var(--color-primary);
   padding: 0 10px;
 }
 
 header h1{
   justify-content: center;
-  color: #000000;
+  color: var(--color-text);
 }
 
 header .menu-bar {
   justify-content: flex-end;
-  color: #67c06a;
+  color: var(--color-secondary);
 }
 
 header .logo i,
@@ -57,15 +91,15 @@ header .menu-bar i {
   width: 180px;
   padding: 20px;
   border-radius: 15px;
-  background-color: #fefcf3;
+  background-color: var(--color-background);
   z-index: 10;
 }
 
 .navigation .nav-title {
   margin-bottom: 15px;
   font-weight: bold;
-  font-size: 1.2em;
-  color: #000000;
+  font-size: var(--font-medium);
+  color: var(--color-text);
   width: 100%;
   text-align: center;
 }
@@ -74,7 +108,7 @@ header .menu-bar i {
   display: flex;
   flex-direction: column;
   list-style: none;
-  border: 1px solid #000000;
+  border: 1px solid var(--color-text);
   border-radius: 20px;
 }
 
@@ -83,14 +117,14 @@ header .menu-bar i {
   padding: 10px 12px;
   text-decoration: none;
   text-align: center;
-  color: #000000;
+  color: var(--color-text);
   border-radius: 0;
   transition: background-color 0.3s ease, color 0.3s ease border-radius 0.3s ease;
 }
 
 .navigation .nav-list a:hover{
-  background-color: #67c06a;
-  color: #ffffff;
+  background-color: var(--color-secondary);
+  color: var(--color-white);
 }
 
 /* 네비게이션 심화 */
@@ -110,7 +144,7 @@ main {
 /* 무한 배너 섹션을 제외한 모든 섹션 공통 스타일 */
 section:not(.infinite-banner-section) {
   border-radius: 5px;
-  background-color: #fefcf3;
+  background-color: var(--color-background);
   padding: 40px;
   margin-right: 20px;
   margin-bottom: 20px;
@@ -127,8 +161,8 @@ section:not(.infinite-banner-section) {
 
 .intro-title, .section-title {
   font-weight: bold;
-  font-size: 1.2em;
-  color: #000000;
+  font-size: var(--font-medium);
+  color: var(--color-text);
   margin-bottom: 20px;
 }
 
@@ -185,10 +219,10 @@ section:not(.infinite-banner-section) {
 }
 
 .card {
-  background-color: white;
+  background-color: var(--color-white);
   border-radius: 5px;
   overflow: hidden;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 10px var(--color-shadow);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   padding: 15px 20px;
   text-align: center;
@@ -197,7 +231,7 @@ section:not(.infinite-banner-section) {
 /* 메인 섹션 심화 */
 .card:hover {
   transform: translateY(-5px) scale(1.03);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 5px 15px var(--color-shadow);
   background-color: #e3eee3;
 }
 
@@ -211,36 +245,36 @@ section:not(.infinite-banner-section) {
 
 .card-title {
   font-weight: bold;
-  font-size: 1rem;
+  font-size: var(--font-small);
   margin-bottom: 5px;
   text-align: center;
 }
 
 .card-like {
-  font-size: 0.9rem;
-  color: #000000;
+  font-size: var(--font-small);
+  color: var(--color-dark);
   margin-bottom: 5px;
 }
 
 .card i.fa-heart {
-  color: #000000;
-  font-size: 1.4rem;
+  color: var(--color-text);
+  font-size: var(--font-large);
   cursor: pointer;
   transition: color 0.3s ease, transform 0.3s ease;
 }
 
 /* 메인 섹션 심화 */
 .card i:hover {
-  color: #67c06a;
+  color: var(--color-secondary);
   transform: scale(1.2);
 }
 
 /* 푸터 */
 .footer {
   padding: 10px;
-  background: #2a2a2a;
-  color: #ffffff;
-  font-size: 0.8rem;
+  background: var(--color-dark);;
+  color: var(--color-white);
+  font-size: var(--font-xsmall);
   text-align: center;
   line-height: 2.0;
   margin-top: 200px;
@@ -265,7 +299,7 @@ section:not(.infinite-banner-section) {
   margin-right: 15px;
   border-radius: 3px;
   overflow: hidden;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 8px var(--color-shadow);
 }
 
 .banner img {
