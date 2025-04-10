@@ -8,6 +8,7 @@ body {
   background-color: #5ebfdd;
 }
 
+/* 헤더 */
 header {
   position: fixed;
   top: 0;
@@ -48,6 +49,7 @@ header .menu-bar i {
   cursor: pointer;
 }
 
+/* 네비게이션 */
 .navigation {
   position: fixed;
   top: 100px;
@@ -91,6 +93,7 @@ header .menu-bar i {
   color: #ffffff;
 }
 
+/* 네비게이션 심화 */
 .navigation .nav-list li:first-child a {
   border-radius: 20px 20px 0 0;
 }
@@ -99,10 +102,12 @@ header .menu-bar i {
   border-radius: 0 0 20px 20px;
 }
 
+/* 메인 섹션 */
 main {
   margin-left: 220px;
 }
 
+/* 무한 배너 섹션을 제외한 모든 섹션 공통 스타일 */
 section:not(.infinite-banner-section) {
   border-radius: 5px;
   background-color: #fefcf3;
@@ -189,6 +194,7 @@ section:not(.infinite-banner-section) {
   text-align: center;
 }
 
+/* 메인 섹션 심화 */
 .card:hover {
   transform: translateY(-5px) scale(1.03);
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
@@ -223,11 +229,13 @@ section:not(.infinite-banner-section) {
   transition: color 0.3s ease, transform 0.3s ease;
 }
 
+/* 메인 섹션 심화 */
 .card i:hover {
   color: #67c06a;
   transform: scale(1.2);
 }
 
+/* 푸터 */
 .footer {
   padding: 10px;
   background: #2a2a2a;
@@ -238,6 +246,7 @@ section:not(.infinite-banner-section) {
   margin-top: 200px;
 }
 
+/* 무한 배너 */
 .infinite-banner-section {
   margin-bottom: 40px;
   margin-right: 20px;
