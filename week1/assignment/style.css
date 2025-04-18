@@ -1,0 +1,324 @@
+/* 루트 변수 설정 */
+:root {
+  --color-primary: #5ebfdd;
+  --color-secondary: #67c06a;
+  --color-background: #fefcf3;
+  --color-text: #222222;
+  --color-white: #ffffff;
+  --color-dark: #24272b;
+  --color-shadow: rgba(0, 0, 0, 0.1);
+
+  --font-xsmall: 0.8rem;
+  --font-small: 1.0rem;
+  --font-medium: 1.2rem;
+  --font-large: 1.4rem;
+  --font-xlarge: 2rem;
+}
+
+/* Pretendard 폰트 불러오기 */
+@font-face {
+  font-family: 'Pretendard';
+  src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Pretendard';
+  src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Bold.woff') format('woff');
+  font-weight: bold;
+  font-style: normal;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* 기본 폰트 설정 */
+body {
+  font-family: 'Pretendard', sans-serif;
+  background-color: var(--color-primary);
+}
+
+/* 헤더 */
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  padding: 12px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--color-background);
+  z-index: 10;
+}
+
+header .logo,
+header h1,
+header .menu-bar {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  font-size: var(--font-xlarge);
+  color: var(--color-primary);
+  padding: 0 10px;
+}
+
+header h1{
+  justify-content: center;
+  color: var(--color-text);
+}
+
+header .menu-bar {
+  justify-content: flex-end;
+  color: var(--color-secondary);
+}
+
+header .logo i,
+header h1,
+header .menu-bar i {
+  cursor: pointer;
+}
+
+/* 네비게이션 */
+.navigation {
+  position: fixed;
+  top: 100px;
+  left: 20px;
+  width: 180px;
+  padding: 20px;
+  border-radius: 15px;
+  background-color: var(--color-background);
+  z-index: 10;
+}
+
+.navigation .nav-title {
+  margin-bottom: 15px;
+  font-weight: bold;
+  font-size: var(--font-medium);
+  color: var(--color-text);
+  width: 100%;
+  text-align: center;
+}
+
+.navigation .nav-list {
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  border: 1px solid var(--color-text);
+  border-radius: 20px;
+}
+
+.navigation .nav-list a {
+  display: block;
+  padding: 10px 12px;
+  text-decoration: none;
+  text-align: center;
+  color: var(--color-text);
+  border-radius: 0;
+  transition: background-color 0.3s ease, color 0.3s ease border-radius 0.3s ease;
+}
+
+.navigation .nav-list a:hover{
+  background-color: var(--color-secondary);
+  color: var(--color-white);
+}
+
+/* 네비게이션 심화 */
+.navigation .nav-list li:first-child a {
+  border-radius: 20px 20px 0 0;
+}
+
+.navigation .nav-list li:last-child a {
+  border-radius: 0 0 20px 20px;
+}
+
+/* 메인 섹션 */
+main {
+  margin-left: 220px;
+}
+
+/* 무한 배너 섹션을 제외한 모든 섹션 공통 스타일 */
+section:not(.infinite-banner-section) {
+  border-radius: 5px;
+  background-color: var(--color-background);
+  padding: 40px;
+  margin-right: 20px;
+  margin-bottom: 20px;
+  scroll-margin-top: 100px;
+}
+
+.top-section {
+  margin-top: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.intro-title, .section-title {
+  font-weight: bold;
+  font-size: var(--font-medium);
+  color: var(--color-text);
+  margin-bottom: 20px;
+}
+
+.grid-layout {
+  align-items: center;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: 1fr 1fr 2fr;
+  gap: 10px;
+  width: auto;
+  max-width: 80%;
+  height: auto;
+  aspect-ratio: 2 / 1;
+  margin: 0 auto;
+}
+
+.grid-item {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  object-fit: cover;
+}
+
+.grid-item1 {
+  grid-column: 1 / 3;
+  grid-row: 1 / 2;
+}
+
+.grid-item2 {
+  grid-column: 1 / 3;
+  grid-row: 2 / 3;
+}
+
+.grid-item3 {
+  grid-column: 3 / 5;
+  grid-row: 1 / 3;
+}
+
+.grid-item4 {
+  grid-column: 1 / 4;
+  grid-row: 3 / 4;
+}
+
+.grid-item5 {
+  grid-column: 4 / 5;
+  grid-row: 3 / 4;
+}
+
+.card-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+  width: 100%;
+}
+
+.card {
+  background-color: var(--color-white);
+  border-radius: 5px;
+  overflow: hidden;
+  box-shadow: 0 2px 10px var(--color-shadow);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  padding: 15px 20px;
+  text-align: center;
+}
+
+/* 메인 섹션 심화 */
+.card:hover {
+  transform: translateY(-5px) scale(1.03);
+  box-shadow: 0 5px 15px var(--color-shadow);
+  background-color: #e3eee3;
+}
+
+.card-img {
+  width: 100%;
+  aspect-ratio: 1 / 1.2;
+  object-fit: cover;
+  border-radius: 3px;
+  margin-bottom: 10px;
+}
+
+.card-title {
+  font-weight: bold;
+  font-size: var(--font-small);
+  margin-bottom: 5px;
+  text-align: center;
+}
+
+.card-like {
+  font-size: var(--font-small);
+  color: var(--color-dark);
+  margin-bottom: 5px;
+}
+
+.card i.fa-heart {
+  color: var(--color-text);
+  font-size: var(--font-large);
+  cursor: pointer;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+/* 메인 섹션 심화 */
+.card i:hover {
+  color: var(--color-secondary);
+  transform: scale(1.2);
+}
+
+/* 푸터 */
+.footer {
+  padding: 10px;
+  background: var(--color-dark);;
+  color: var(--color-white);
+  font-size: var(--font-xsmall);
+  text-align: center;
+  line-height: 2.0;
+  margin-top: 200px;
+}
+
+/* 무한 배너 */
+.infinite-banner-section {
+  margin-bottom: 40px;
+  margin-right: 20px;
+}
+
+.loop {
+  display: flex;
+  overflow: hidden;
+  padding: 20px 0;
+  border-radius: 10px;
+}
+
+.banner {
+  width: 250px;
+  height: 200px;
+  margin-right: 15px;
+  border-radius: 3px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px var(--color-shadow);
+}
+
+.banner img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.banner-list1, .banner-list2 {
+  display: flex;
+  animation: banner-roll 30s linear infinite;
+}
+
+@keyframes banner-roll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
