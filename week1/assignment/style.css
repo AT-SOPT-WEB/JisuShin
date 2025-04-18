@@ -195,7 +195,7 @@ main {
   gap: 0.625rem;
 
   width: auto;
-  max-width: 50rem;
+  max-width: 80%;
   height: auto;
   aspect-ratio: 2 / 1;
   margin: 0 auto;
