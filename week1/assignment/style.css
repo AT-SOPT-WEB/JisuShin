@@ -309,13 +309,9 @@ main {
   border-radius: 0.625rem;
 }
 
-.infinite-banner__list {
-  display: flex;
-  list-style: none;
-}
-
 .infinite-banner__list--1,
 .infinite-banner__list--2 {
+  display: flex;
   animation: banner-roll 30s linear infinite;
 }
 
