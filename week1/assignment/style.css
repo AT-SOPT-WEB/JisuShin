@@ -34,12 +34,6 @@
   font-display: swap;
 }
 
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
 html {
   scroll-behavior: smooth;
 }
@@ -138,7 +132,6 @@ body {
   display: block;
 
   padding: 0.625rem 0.75rem;
-  text-decoration: none;
   text-align: center;
   color: var(--color-text);
   border-radius: 0;
