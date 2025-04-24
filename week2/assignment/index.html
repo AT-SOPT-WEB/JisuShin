@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>To Do List</title>
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://kit.fontawesome.com/8b025ed8fb.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+  <!-- 상단 섹션(필터링) -->
+  <header class="todo-header">
+    <nav class="todo-filter">
+      <button class="todo-filter__btn todo-filter__btn--active" data-filter="all">전체</button>
+      <button class="todo-filter__btn" data-filter="completed">완료됨</button>
+      <button class="todo-filter__btn" data-filter="incomplete">미완료</button>
+      <button class="todo-filter__btn todo-filter__btn--dropdown" data-filter="priority">
+        중요도
+        <i class="fa-solid fa-caret-down"></i>
+      </button>
+          
+      <!-- 심화: 중요도 버튼 클릭시 드롭다운, 중요도 필터링-->
+      <div class="todo-filter__dropdown">
+        <button class="todo-filter__dropdown-item" data-priority="1">중요도 1</button>
+        <button class="todo-filter__dropdown-item" data-priority="2">중요도 2</button>
+        <button class="todo-filter__dropdown-item" data-priority="3">중요도 3</button>
+      </div>
+    </nav>
+  </header>
+
+  <main class="todo-main">
+    <!-- 할 일 추가 섹션 -->
+    <section class="todo-input">
+      <div class="todo-input__container">
+          <input type="text" id="todo-input" class="todo-input__text" placeholder="할 일을 입력하세요">
+          <div class="todo-input__priority">
+            <button id="priority-button" class="todo-input__priority-btn">
+                <span id="selected-priority">중요도 선택</span>
+                <i class="fa-solid fa-caret-down"></i>
+            </button>
+            <div id="priority-dropdown" class="todo-input__priority-dropdown">
+                <button class="todo-input__priority-item" data-value="1">중요도 1</button>
+                <button class="todo-input__priority-item" data-value="2">중요도 2</button>
+                <button class="todo-input__priority-item" data-value="3">중요도 3</button>
+            </div>
+        </div>
+        <button id="add-btn" class="todo-input__btn">추가</button>
+      </div>
+    </section>
+
+    <!-- 삭제-완료 버튼 섹션 -->
+    <section class="todo-actions">
+      <button id="delete-btn" class="todo-actions__btn todo-actions__btn--delete">삭제</button>
+      <button id="complete-btn" class="todo-actions__btn todo-actions__btn--complete">완료</button>
+    </section>
+
+    <!-- todo 테이블 섹션 -->
+    <section class="todo-table">
+      <table class="todo-table__content">
+        <thead class="todo-table__head">
+          <tr>
+            <th>
+              <input type="checkbox" id="select-all" class="todo-table__checkbox-all">
+            </th>
+            <th>중요도</th>
+            <th>완료됨</th>
+            <th>할 일</th>
+          </tr>
+        </thead>
+        <tbody id="todo-list" class="todo-table__body">
+          <!-- JavaScript로 생성될 부분 -->
+        </tbody>
+      </table>
+    </section>
+  </main>
+
+  <!-- 모달 섹션 -->
+  <div id="already-completed-modal" class="todo-modal" style="display: none;">
+    <div class="todo-modal__content">
+      <p class="todo-modal__text">이미 완료된 항목이 포함되어 있습니다.</p>
+      <button id="close-modal-btn" class="todo-modal__btn">닫기</button>
+    </div>
+  </div>
+
+  <script type="module" src="js/data.js"></script>
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
