@@ -37,8 +37,16 @@ function getFilteredTodos() {
   });
 }
 
+// 선택된 할 일들의 ID를 반환하는 함수
+function getSelectedTodoIds() {
+  const selectedCheckboxes = document.querySelectorAll('.todo-table__checkbox:checked');
+  return Array.from(selectedCheckboxes).map(checkbox => {
+    return parseInt(checkbox.closest('tr').dataset.id);
+  });
+}
+
 // 투두 테이블 렌더링 기능
-function renderTodoTable(todos = getTodos()) {
+function renderTodoTable(todos = getFilteredTodos()) {
   const todoList = document.getElementById('todo-list');
   todoList.innerHTML = '';
   
@@ -62,20 +70,69 @@ function renderTodoTable(todos = getTodos()) {
   });
   
   todoList.appendChild(fragment);
-}
-
-// 드롭다운 관리 함수
-function toggleDropdown(dropdown) {
-  dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
-}
-
-function hideAllDropdowns() {
-  // 중요도 필터 드롭다운 숨기기
-  const filterDropdown = document.querySelector('.todo-filter__dropdown');
-  if (filterDropdown) {
-    filterDropdown.style.display = 'none';
-  }
   
+  // 체크박스 이벤트 리스너 등록
+  setupCheckboxListeners();
+}
+
+// 체크박스 이벤트 리스너 설정
+function setupCheckboxListeners() {
+  const checkboxes = document.querySelectorAll('.todo-table__checkbox');
+  checkboxes.forEach(checkbox => {
+    checkbox.addEventListener('change', () => {
+      // 삭제/완료 버튼 활성화 여부 업데이트
+      updateActionButtonsState();
+    });
+  });
+}
+
+// 삭제/완료 버튼 상태 업데이트
+function updateActionButtonsState() {
+  const selectedIds = getSelectedTodoIds();
+  const deleteBtn = document.getElementById('delete-btn');
+  const completeBtn = document.getElementById('complete-btn');
+  
+  // 선택된 항목이 있을 때만 버튼 활성화
+  if (selectedIds.length > 0) {
+    deleteBtn.disabled = false;
+    completeBtn.disabled = false;
+    deleteBtn.classList.add('todo-actions__btn--active');
+    completeBtn.classList.add('todo-actions__btn--active');
+  } else {
+    deleteBtn.disabled = true;
+    completeBtn.disabled = true;
+    deleteBtn.classList.remove('todo-actions__btn--active');
+    completeBtn.classList.remove('todo-actions__btn--active');
+  }
+}
+
+// 모달 관련 함수
+function showModal() {
+  const modal = document.getElementById('already-completed-modal');
+  modal.style.display = 'flex';
+}
+
+function hideModal() {
+  const modal = document.getElementById('already-completed-modal');
+  modal.style.display = 'none';
+  
+  // 모달창 닫을 때 모든 체크박스 해제
+  uncheckAllTodos();
+}
+
+// 모든 체크박스 해제 함수
+function uncheckAllTodos() {
+  const checkboxes = document.querySelectorAll('.todo-table__checkbox');
+  checkboxes.forEach(checkbox => {
+    checkbox.checked = false;
+  });
+  
+  // 삭제/완료 버튼 상태 업데이트
+  updateActionButtonsState();
+}
+
+// 중요도 선택 드롭다운 숨기기 함수
+function hideAllDropdowns() {
   // 중요도 선택 드롭다운 숨기기
   const priorityDropdown = document.getElementById('priority-dropdown');
   if (priorityDropdown) {
@@ -87,18 +144,12 @@ function hideAllDropdowns() {
 function setupFilterButtons() {
   // 모든 필터 버튼 선택
   const filterButtons = document.querySelectorAll('.todo-filter__btn');
+  const priorityFilter = document.getElementById('priority-filter');
   
   // 이벤트 위임 대신 개별 버튼에 이벤트 리스너 등록
   filterButtons.forEach(button => {
     button.addEventListener('click', () => {
       const filterType = button.dataset.filter;
-      
-      // 중요도 버튼은 드롭다운 토글 기능만 수행
-      if (filterType === 'priority') {
-        const dropdown = document.querySelector('.todo-filter__dropdown');
-        dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
-        return;
-      }
       
       // 버튼 활성화 상태 업데이트
       filterButtons.forEach(btn => {
@@ -108,37 +159,34 @@ function setupFilterButtons() {
       
       // 필터 상태 업데이트
       currentFilter = filterType;
-      // 전체 버튼 클릭 시 중요도 필터 초기화
+      // 필터 버튼 클릭 시 중요도 필터 초기화
       currentPriority = null;
+      
+      // 모든 필터 버튼 클릭 시 중요도 select 초기화
+      priorityFilter.selectedIndex = 0; // 첫 번째 옵션(중요도)으로 초기화
 
       // 필터링된 목록으로 테이블 다시 렌더링
       renderTodoTable(getFilteredTodos());
     });
   });
 
-  // 중요도 드롭다운 아이템에 이벤트 리스너 등록
-  const priorityItems = document.querySelectorAll('.todo-filter__dropdown-item');
-  priorityItems.forEach(item => {
-    item.addEventListener('click', () => {
-      const priority = parseInt(item.dataset.priority);
-      
-      // 중요도 필터 설정
-      currentPriority = priority;
-      currentFilter = FILTER_TYPES.ALL;
+  // 중요도 select 엘리먼트에 이벤트 리스너 등록
+  priorityFilter.addEventListener('change', () => {
+    const priority = priorityFilter.value ? parseInt(priorityFilter.value) : null;
+    
+    // 중요도 필터 설정
+    currentPriority = priority;
+    currentFilter = FILTER_TYPES.ALL;
 
-      // 버튼 활성화 상태 업데이트 - 전체 버튼을 활성화
-      const filterButtons = document.querySelectorAll('.todo-filter__btn');
-      filterButtons.forEach(btn => {
-        btn.classList.remove('todo-filter__btn--active');
-      });
-      document.querySelector('.todo-filter__btn[data-filter="all"]').classList.add('todo-filter__btn--active');
-
-      // 드롭다운 닫기
-      document.querySelector('.todo-filter__dropdown').style.display = 'none';
-
-      // 필터링된 목록으로 테이블 다시 렌더링
-      renderTodoTable(getFilteredTodos());
+    // 버튼 활성화 상태 업데이트 - 전체 버튼을 활성화
+    const filterButtons = document.querySelectorAll('.todo-filter__btn');
+    filterButtons.forEach(btn => {
+      btn.classList.remove('todo-filter__btn--active');
     });
+    document.querySelector('.todo-filter__btn[data-filter="all"]').classList.add('todo-filter__btn--active');
+
+    // 필터링된 목록으로 테이블 다시 렌더링
+    renderTodoTable(getFilteredTodos());
   });
 }
 
@@ -146,37 +194,13 @@ function setupFilterButtons() {
 function setupAddTodoForm() {
   // 필요한 DOM 요소 선택
   const todoInput = document.getElementById('todo-input');
-  const priorityButton = document.getElementById('priority-button');
-  const priorityDropdown = document.getElementById('priority-dropdown');
-  const selectedPriorityText = document.getElementById('selected-priority');
+  const prioritySelect = document.getElementById('priority-select');
   const addButton = document.getElementById('add-btn');
-  
-  // 사용자가 선택한 중요도 값 저장 변수
-  let selectedPriority = null;
-  
-  // 중요도 선택 버튼 클릭 시 드롭다운 표시/숨김
-  priorityButton.addEventListener('click', () => {
-    priorityDropdown.style.display = priorityDropdown.style.display === 'block' ? 'none' : 'block';
-  });
-  
-  // 중요도 드롭다운 아이템 선택 이벤트
-  const priorityItems = document.querySelectorAll('.todo-input__priority-item');
-  priorityItems.forEach(item => {
-    item.addEventListener('click', () => {
-      const priority = parseInt(item.dataset.value);
-      
-      // 선택된 중요도 업데이트
-      selectedPriority = priority;
-      selectedPriorityText.textContent = `중요도 ${selectedPriority}`;
-      
-      // 드롭다운 닫기
-      priorityDropdown.style.display = 'none';
-    });
-  });
   
   // 추가 버튼 클릭 이벤트
   addButton.addEventListener('click', () => {
     const title = todoInput.value.trim();
+    const selectedPriority = prioritySelect.value ? parseInt(prioritySelect.value) : null;
     
     // 유효성 검사: 할 일 제목과 중요도 모두 입력되어야 함
     if (!title || !selectedPriority) {
@@ -201,19 +225,99 @@ function setupAddTodoForm() {
     
     // 입력 필드 초기화
     todoInput.value = '';
-    selectedPriorityText.textContent = '중요도 선택';
-    selectedPriority = null;
+    prioritySelect.selectedIndex = 0;
     
     // 테이블 다시 렌더링 (현재 필터 유지)
     renderTodoTable(getFilteredTodos());
   });
 }
 
+// 할 일 삭제 함수
+function deleteTodos(ids) {
+  // 현재 할 일 목록 가져오기
+  let todos = getTodos();
+  
+  // 선택된 ID를 가진 할 일들 제외하고 새 배열 생성
+  todos = todos.filter(todo => !ids.includes(todo.id));
+  
+  // 변경된 목록 저장
+  saveTodos(todos);
+  
+  // 테이블 다시 렌더링
+  renderTodoTable(getFilteredTodos());
+  
+  // 삭제/완료 버튼 상태 업데이트
+  updateActionButtonsState();
+}
+
+// 할 일 완료 함수
+function completeTodos(ids) {
+  // 현재 할 일 목록 가져오기
+  let todos = getTodos();
+  
+  // 이미 완료된 할 일이 있는지 확인
+  const hasCompletedTodo = todos
+    .filter(todo => ids.includes(todo.id))
+    .some(todo => todo.completed);
+  
+  // 완료된 할 일이 있으면 모달창 표시
+  if (hasCompletedTodo) {
+    showModal();
+    return;
+  }
+  
+  // 선택된 할 일들을 완료 상태로 변경
+  todos = todos.map(todo => {
+    if (ids.includes(todo.id)) {
+      return { ...todo, completed: true };
+    }
+    return todo;
+  });
+  
+  // 변경된 목록 저장
+  saveTodos(todos);
+  
+  // 테이블 다시 렌더링
+  renderTodoTable(getFilteredTodos());
+  
+  // 삭제/완료 버튼 상태 업데이트
+  updateActionButtonsState();
+}
+
+// 삭제/완료 버튼 이벤트 설정 함수
+function setupActionButtons() {
+  const deleteBtn = document.getElementById('delete-btn');
+  const completeBtn = document.getElementById('complete-btn');
+  const closeModalBtn = document.getElementById('close-modal-btn');
+  
+  // 삭제 버튼 클릭 이벤트
+  deleteBtn.addEventListener('click', () => {
+    const selectedIds = getSelectedTodoIds();
+    if (selectedIds.length > 0) {
+      deleteTodos(selectedIds);
+    }
+  });
+  
+  // 완료 버튼 클릭 이벤트
+  completeBtn.addEventListener('click', () => {
+    const selectedIds = getSelectedTodoIds();
+    if (selectedIds.length > 0) {
+      completeTodos(selectedIds);
+    }
+  });
+  
+  // 모달 닫기 버튼 클릭 이벤트
+  closeModalBtn.addEventListener('click', () => {
+    hideModal();
+  });
+  
+  // 초기 상태 설정
+  deleteBtn.disabled = true;
+  completeBtn.disabled = true;
+}
+
 // 페이지 로드 완료 시 실행될 초기화 함수
 document.addEventListener('DOMContentLoaded', () => {
-  // 드롭다운 초기화
-  hideAllDropdowns();
-
   // localStorage에 데이터가 없을 때만 초기화
   // 이미 데이터가 있으면 사용자가 수정한 데이터를 유지하기 위함 !!
   if (!localStorage.getItem(TODO_STORAGE_KEY)) {
@@ -225,6 +329,9 @@ document.addEventListener('DOMContentLoaded', () => {
   
   // 할 일 추가 폼 이벤트 등록
   setupAddTodoForm();
+  
+  // 삭제/완료 버튼 이벤트 등록
+  setupActionButtons();
   
   // 초기 테이블 렌더링
   renderTodoTable();
