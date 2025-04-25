@@ -18,12 +18,16 @@
         <li><button class="todo-filter__btn" data-filter="completed">완료됨</button></li>
         <li><button class="todo-filter__btn" data-filter="incomplete">미완료</button></li>
         <li class="todo-filter__dropdown-container">
-          <select class="todo-filter__select" id="priority-filter">
-            <option value="" disabled selected>중요도</option>
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-          </select>
+          <div class="todo-filter__priority-dropdown">
+            <button id="priority-dropdown-btn" class="todo-filter__btn">
+              중요도 <i class="fa-solid fa-caret-down"></i>
+            </button>
+            <div id="priority-dropdown-menu" class="todo-filter__dropdown-menu">
+              <button class="todo-filter__dropdown-item" data-priority="1">🖤</button>
+              <button class="todo-filter__dropdown-item" data-priority="2">🖤🖤</button>
+              <button class="todo-filter__dropdown-item" data-priority="3">🖤🖤🖤</button>
+            </div>
+          </div>
         </li>
       </ul>
     </nav>
@@ -32,18 +36,15 @@
   <main class="todo-main">
     <!-- 할 일 추가 섹션 -->
     <section class="todo-input">
-      <div class="todo-input__container">
-          <input type="text" id="todo-input" class="todo-input__text" placeholder="할 일을 입력하세요">
-          <div class="todo-input__priority">
-            <div class="todo-input__select-wrapper">
-              <select id="priority-select" class="todo-input__priority-select">
-                <option value="" disabled selected>중요도 선택</option>
-                <option value="1">중요도 1</option>
-                <option value="2">중요도 2</option>
-                <option value="3">중요도 3</option>
-              </select>
-            </div>
-          </div>
+      <div class="todo-input__row">
+        <input type="text" id="todo-input" class="todo-input__text" placeholder="할 일을 입력하세요. 할 일을 미루지 맙시다.🤍">
+        <div class="todo-input__select-wrapper">
+          <select id="priority-select" class="todo-input__priority-select">
+            <option value="" disabled selected>중요도 선택</option>
+            <option value="1">중요도 1</option>
+            <option value="2">중요도 2</option>
+            <option value="3">중요도 3</option>
+          </select>
         </div>
         <button id="add-btn" class="todo-input__btn">추가</button>
       </div>
@@ -51,8 +52,10 @@
 
     <!-- 삭제-완료 버튼 섹션 -->
     <section class="todo-actions">
-      <button id="delete-btn" class="todo-actions__btn todo-actions__btn--delete">삭제</button>
-      <button id="complete-btn" class="todo-actions__btn todo-actions__btn--complete">완료</button>
+      <div class="todo-actions__container">
+        <button id="delete-btn" class="todo-actions__btn todo-actions__btn--delete">삭제</button>
+        <button id="complete-btn" class="todo-actions__btn todo-actions__btn--complete">완료</button>
+      </div>
     </section>
 
     <!-- todo 테이블 섹션 -->
@@ -64,7 +67,7 @@
               <input type="checkbox" id="select-all" class="todo-table__checkbox-all">
             </th>
             <th>중요도</th>
-            <th>완료됨</th>
+            <th>완료 여부</th>
             <th>할 일</th>
           </tr>
         </thead>
@@ -78,7 +81,7 @@
   <!-- 모달 섹션 -->
   <div id="already-completed-modal" class="todo-modal" style="display: none;">
     <div class="todo-modal__content">
-      <p class="todo-modal__text">이미 완료된 항목이 포함되어 있습니다.</p>
+      <p class="todo-modal__text">이미 완료된 항목이 포함되어 있습니다 !</p>
       <button id="close-modal-btn" class="todo-modal__btn">닫기</button>
     </div>
   </div>
