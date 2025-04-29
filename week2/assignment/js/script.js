@@ -1,7 +1,9 @@
 import { todos as initialTodos } from './data.js';
 
 const STORAGE_KEY = 'todos';
-let currentFilter = 'all', currentPriority = null;
+
+let currentFilter = 'all';
+let currentPriority = null;
 
 // DOM 요소 선택 헬퍼 함수
 const $ = selector => document.querySelector(selector);
