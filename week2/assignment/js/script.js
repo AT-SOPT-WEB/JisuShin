@@ -16,12 +16,11 @@ const getSelectedIds = () => [...$$('.todo-table__checkbox:checked')].map(cb => 
 
 // 필터링된 할 일 목록 반환
 function getFilteredTodos() {
-  return getTodos().filter(todo => {
-    if (currentFilter === 'completed' && !todo.completed) return false;
-    if (currentFilter === 'incomplete' && todo.completed) return false;
-    if (currentPriority !== null && todo.priority !== currentPriority) return false;
-    return true;
-  });
+  return getTodos().filter(todo =>
+    (currentFilter !== 'completed' || todo.completed) &&
+    (currentFilter !== 'incomplete' || !todo.completed) &&
+    (currentPriority === null || todo.priority === currentPriority)
+  );
 }
 
 function renderTodos() {
