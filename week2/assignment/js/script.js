@@ -59,12 +59,13 @@ function updateUI() {
 }
 
 function setupCheckboxes() {
-  $$('.todo-table__checkbox').forEach(cb => cb.addEventListener('change', updateUI));
+  const checkboxes = $$('.todo-table__checkbox');
+  checkboxes.forEach(cb => cb.addEventListener('change', updateUI));
   
   const selectAll = $('#select-all');
   if (selectAll) {
     selectAll.addEventListener('change', () => {
-      $$('.todo-table__checkbox').forEach(cb => cb.checked = selectAll.checked);
+      checkboxes.forEach(cb => cb.checked = selectAll.checked);
       updateButtonStates();
     });
   }
