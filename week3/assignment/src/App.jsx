@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import Header from './components/Header';
 import GitHubSearchPage from './components/GitHubSearch/GitHubSearchPage';
+import BaseballGamePage from './components/BaseballGame/BaseballGamePage';
 
 function App() {
   const [currentTab, setCurrentTab] = useState('github'); // 기본 탭은 github
@@ -13,9 +14,7 @@ function App() {
         {currentTab === 'github' ? (
           <GitHubSearchPage />
         ) : (
-          <div>
-            <p>숫자야구 게임 구현 예정</p>
-          </div>
+          <BaseballGamePage />
         )}
       </main>
     </div>
