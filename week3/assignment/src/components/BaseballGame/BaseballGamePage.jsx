@@ -5,12 +5,24 @@ import GameMessage from './GameMessage';
 import GameHistoryList from './GameHistoryList';
 
 function BaseballGamePage() {
-  const { guesses, message, gameStatus, makeGuess } = useBaseballGame();
+  const { 
+    guesses, 
+    message, 
+    status, 
+    attempts, 
+    maxAttempts,
+    makeGuess 
+  } = useBaseballGame();
 
   return (
     <div className="p-4">
-      <GameInput onSubmit={makeGuess} gameStatus={gameStatus} />
-      <GameMessage message={message} />
+      <GameInput onSubmit={makeGuess} gameStatus={status} />
+      <GameMessage 
+        message={message} 
+        attempts={attempts} 
+        maxAttempts={maxAttempts}
+        gameStatus={status}
+      />
       <GameHistoryList guesses={guesses} />
     </div>
   );
