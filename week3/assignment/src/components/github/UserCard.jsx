@@ -4,11 +4,14 @@ function UserCard({ userInfo, onClose }) {
   const { data } = userInfo;
 
   return (
-    <div className="bg-gray-800 text-white p-6 rounded-lg shadow-md relative mb-6">
+    <div 
+      className="bg-gray-800 text-white p-6 rounded-lg shadow-md relative mb-6"
+      aria-live="polite"
+    >
       <Button
         onClick={onClose}
         className="absolute top-3 right-3 bg-blue-500 text-white rounded-full w-8 h-8 flex items-center justify-center hover:bg-blue-600"
-        aria-label="Close"
+        aria-label="Close user card"
       >
         ✕
       </Button>

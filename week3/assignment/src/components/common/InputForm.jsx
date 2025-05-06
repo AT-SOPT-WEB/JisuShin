@@ -7,6 +7,8 @@ function InputForm({
   maxLength,
   autoFocus = false,
   className = '',
+  ariaLabel,
+  ariaRequired = false,
   ...rest
 }) {
   const [value, setValue] = useState('');
@@ -23,7 +25,7 @@ function InputForm({
   const disabledClasses = disabled ? 'disabled:bg-gray-100 disabled:text-gray-500' : '';
   
   return (
-    <form onSubmit={handleSubmit} className="mb-6">
+    <form onSubmit={handleSubmit} className="mb-6" role="search">
       <input
         type="text"
         value={value}
@@ -33,6 +35,9 @@ function InputForm({
         className={`${baseClasses} ${disabledClasses} ${className}`}
         maxLength={maxLength}
         autoFocus={autoFocus}
+        aria-label={ariaLabel || placeholder}
+        aria-required={ariaRequired}
+        aria-disabled={disabled}
         {...rest}
       />
     </form>

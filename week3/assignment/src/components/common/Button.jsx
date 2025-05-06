@@ -7,6 +7,7 @@ function Button({
   className = '', 
   disabled = false,
   type = 'button',
+  ariaLabel,
   ...rest 
 }) {
   // 버튼 스타일 변형에 따른 클래스 설정
@@ -26,6 +27,7 @@ function Button({
       onClick={onClick} 
       disabled={disabled}
       type={type}
+      aria-label={ariaLabel || undefined}
       {...rest}
     >
       {children}

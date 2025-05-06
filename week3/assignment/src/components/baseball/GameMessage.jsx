@@ -8,6 +8,8 @@ function GameMessage({ message, attempts, maxAttempts, gameStatus }) {
     return '';
   };
 
+  const isAlert = gameStatus === GAME_STATUS.WON || gameStatus === GAME_STATUS.LOST;
+
   return (
     <div className="text-center mb-6">
       {attempts > 0 && (
@@ -16,7 +18,11 @@ function GameMessage({ message, attempts, maxAttempts, gameStatus }) {
         </div>
       )}
       {message && (
-        <p className={`text-lg ${getMessageStyle()}`}>
+        <p 
+          className={`text-lg ${getMessageStyle()}`}
+          role={isAlert ? "alert" : "status"}
+          aria-live={isAlert ? "assertive" : "polite"}
+        >
           {message}
         </p>
       )}
