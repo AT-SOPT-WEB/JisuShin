@@ -13,12 +13,18 @@ export const saveRecentSearches = (searches) => {
 
 // 최근 검색어 추가
 export const addRecentSearch = (username, currentSearches) => {
-  if (!currentSearches.includes(username)) {
-    const updatedSearches = [...currentSearches, username];
-    saveRecentSearches(updatedSearches);
-    return updatedSearches;
+  if (currentSearches.includes(username)) {
+    return currentSearches;
   }
-  return currentSearches;
+  let updatedSearches = [...currentSearches, username];
+
+  if (updatedSearches.length > 3) {
+    updatedSearches = updatedSearches.slice(-3);
+  }
+
+  saveRecentSearches(updatedSearches);
+
+  return updatedSearches;
 };
 
 // 최근 검색어 삭제
