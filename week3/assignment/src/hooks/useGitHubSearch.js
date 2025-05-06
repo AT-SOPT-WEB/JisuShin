@@ -8,7 +8,8 @@ import {
 } from '../utils/githubUtils';
 
 export default function useGitHubSearch() {
-  const [userInfo, setUserInfo] = useState({ status: API_STATUS.IDLE, data: null });
+  const [status, setStatus] = useState(API_STATUS.IDLE);
+  const [userData, setUserData] = useState(null);
   const [recentSearches, setRecentSearches] = useState([]);
 
   // localStorage에서 최근 검색어 로드
@@ -19,16 +20,22 @@ export default function useGitHubSearch() {
 
   // GitHub API 호출
   const getUserInfo = async (username) => {
-    setUserInfo({ status: API_STATUS.PENDING, data: null });
+    setStatus(API_STATUS.PENDING);
+    setUserData(null);
+
     try {
       const response = await fetch(`https://api.github.com/users/${username}`);
       if (!response.ok) throw new Error('Network response was not ok');
+      
       const data = await response.json();
-      setUserInfo({ status: API_STATUS.RESOLVED, data });
+      setUserData(data);
+      setStatus(API_STATUS.RESOLVED);
+
       const updatedSearches = addRecentSearch(username, recentSearches);
       setRecentSearches(updatedSearches);
     } catch {
-      setUserInfo({ status: API_STATUS.REJECTED, data: null });
+      setStatus(API_STATUS.REJECTED);
+      setUserData(null);
     }
   };
 
@@ -40,7 +47,13 @@ export default function useGitHubSearch() {
 
   // 사용자 정보 카드 닫기
   const clearUserInfo = () => {
-    setUserInfo({ status: API_STATUS.IDLE, data: null });
+    setStatus(API_STATUS.IDLE);
+    setUserData(null);
+  };
+
+  const userInfo = {
+    status,
+    data: userData
   };
 
   return {
