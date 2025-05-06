@@ -1,20 +1,14 @@
 // src/hooks/useBaseballGame.js
 import { useState, useEffect, useCallback } from 'react';
+import { GAME_STATUS, GAME_SETTINGS, GAME_MESSAGES } from '../constants/baseball';
 
 export default function useBaseballGame() {
-  // 상수 정의
-  const MAX_ATTEMPTS = 10;
-  const RESET_DELAY = {
-    WIN: 3000,
-    LOSE: 5000
-  };
-  
   // 게임 상태
   const [gameState, setGameState] = useState({
     answer: [],
     guesses: [],
     message: '',
-    status: 'playing', // 'playing', 'won', 'lost'
+    status: GAME_STATUS.PLAYING,
     attempts: 0
   });
   
@@ -47,9 +41,11 @@ export default function useBaseballGame() {
   useEffect(() => {
     const { status } = gameState;
     
-    if (status === 'playing') return;
+    if (status === GAME_STATUS.PLAYING) return;
     
-    const delay = status === 'won' ? RESET_DELAY.WIN : RESET_DELAY.LOSE;
+    const delay = status === GAME_STATUS.WON 
+      ? GAME_SETTINGS.RESET_DELAY.WIN
+      : GAME_SETTINGS.RESET_DELAY.LOSE;
     const timer = setTimeout(resetGame, delay);
     
     return () => clearTimeout(timer);
@@ -59,18 +55,18 @@ export default function useBaseballGame() {
   const validateGuess = (guess) => {
     // 숫자만 입력 가능
     if (!/^\d+$/.test(guess)) {
-      return { valid: false, message: '숫자만 입력할 수 있습니다.' };
+      return { valid: false, message: GAME_MESSAGES.NUMERIC_ONLY };
     }
 
     // 3자리 이하 확인
     if (guess.length > 3) {
-      return { valid: false, message: '3자리 이하의 숫자만 입력할 수 있습니다.' };
+      return { valid: false, message: GAME_MESSAGES.MAX_DIGITS };
     }
 
     // 중복 숫자 확인
     const digits = [...guess];
     if (new Set(digits).size !== digits.length) {
-      return { valid: false, message: '서로 다른 숫자 3자리를 입력해주세요!' };
+      return { valid: false, message: GAME_MESSAGES.UNIQUE_DIGITS };
     }
 
     return { valid: true, message: '' };
@@ -98,8 +94,8 @@ export default function useBaseballGame() {
   const getResultMessage = (result) => {
     const { strikes, balls } = result;
     
-    if (strikes === 0 && balls === 0) return 'OUT';
-    return `${strikes}S ${balls}B`;
+    if (strikes === 0 && balls === 0) return GAME_MESSAGES.OUT;
+    return GAME_MESSAGES.STRIKE_BALL(strikes, balls);
   };
 
   // 게임 진행
@@ -133,13 +129,13 @@ export default function useBaseballGame() {
       
       // 승리 조건
       if (result.strikes === 3) {
-        newState.message = '🎉 정답입니다! 3초 후에 게임이 리셋됩니다.';
-        newState.status = 'won';
+        newState.message = GAME_MESSAGES.VICTORY;
+        newState.status = GAME_STATUS.WON;
       } 
       // 패배 조건
-      else if (newAttempts >= MAX_ATTEMPTS) {
-        newState.message = `💥 게임 오버! 10번을 넘겨서 실패하였습니다. 게임이 초기화됩니다.`;
-        newState.status = 'lost';
+      else if (newAttempts >= GAME_SETTINGS.MAX_ATTEMPTS) {
+        newState.message = GAME_MESSAGES.DEFEAT;
+        newState.status = GAME_STATUS.LOST;
       } 
       // 계속 진행
       else {
@@ -155,7 +151,7 @@ export default function useBaseballGame() {
     message: gameState.message,
     status: gameState.status,
     attempts: gameState.attempts,
-    maxAttempts: MAX_ATTEMPTS,
+    maxAttempts: GAME_SETTINGS.MAX_ATTEMPTS,
     makeGuess,
     resetGame
   };

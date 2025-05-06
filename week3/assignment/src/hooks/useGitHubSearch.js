@@ -1,5 +1,6 @@
 // src/hooks/useGitHubSearch.js
 import { useState, useEffect } from 'react';
+import { API_STATUS, STORAGE_KEYS } from '../constants/github';
 
 export default function useGitHubSearch() {
   const [userInfo, setUserInfo] = useState({ status: 'idle', data: null });
@@ -7,7 +8,7 @@ export default function useGitHubSearch() {
 
   // localStorage에서 최근 검색어 로드
   useEffect(() => {
-    const savedSearches = localStorage.getItem('recentSearches');
+    const savedSearches = localStorage.getItem(STORAGE_KEYS.RECENT_SEARCHES);
     if (savedSearches) {
       setRecentSearches(JSON.parse(savedSearches));
     }
@@ -15,15 +16,15 @@ export default function useGitHubSearch() {
 
   // GitHub API 호출
   const getUserInfo = async (username) => {
-    setUserInfo({ status: 'pending', data: null });
+    setUserInfo({ status: API_STATUS.PENDING, data: null });
     try {
       const response = await fetch(`https://api.github.com/users/${username}`);
       if (!response.ok) throw new Error('Network response was not ok');
       const data = await response.json();
-      setUserInfo({ status: 'resolved', data });
+      setUserInfo({ status: API_STATUS.RESOLVED, data });
       saveSearch(username);
     } catch {
-      setUserInfo({ status: 'rejected', data: null });
+      setUserInfo({ status: API_STATUS.REJECTED, data: null });
     }
   };
 
@@ -32,7 +33,7 @@ export default function useGitHubSearch() {
     if (!recentSearches.includes(username)) {
       const updatedSearches = [...recentSearches, username];
       setRecentSearches(updatedSearches);
-      localStorage.setItem('recentSearches', JSON.stringify(updatedSearches));
+      localStorage.setItem(STORAGE_KEYS.RECENT_SEARCHES, JSON.stringify(updatedSearches));
     }
   };
 
@@ -40,12 +41,12 @@ export default function useGitHubSearch() {
   const removeSearch = (username) => {
     const updatedSearches = recentSearches.filter(search => search !== username);
     setRecentSearches(updatedSearches);
-    localStorage.setItem('recentSearches', JSON.stringify(updatedSearches));
+    localStorage.setItem(STORAGE_KEYS.RECENT_SEARCHES, JSON.stringify(updatedSearches));
   };
 
   // 사용자 정보 카드 닫기
   const clearUserInfo = () => {
-    setUserInfo({ status: 'idle', data: null });
+    setUserInfo({ status: API_STATUS.IDLE, data: null });
   };
 
   return {

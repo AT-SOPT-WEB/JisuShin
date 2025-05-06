@@ -3,6 +3,7 @@ import SearchBar from './SearchBar';
 import UserCard from './UserCard';
 import RecentSearches from './RecentSearches';
 import useGitHubSearch from '../../hooks/useGitHubSearch';
+import { API_STATUS } from '../../constants/github';
 
 function GitHubSearchPage() {
   const { userInfo, recentSearches, getUserInfo, removeSearch, clearUserInfo } = useGitHubSearch();
@@ -15,7 +16,7 @@ function GitHubSearchPage() {
         onRemove={removeSearch} 
         onSelect={getUserInfo} 
       />
-      {userInfo.status === 'resolved' && (
+      {userInfo.status === API_STATUS.RESOLVED && (
         <UserCard userInfo={userInfo} onClose={clearUserInfo} />
       )}
     </div>
