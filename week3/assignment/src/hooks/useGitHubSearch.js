@@ -1,17 +1,20 @@
 // src/hooks/useGitHubSearch.js
 import { useState, useEffect } from 'react';
 import { API_STATUS, STORAGE_KEYS } from '../constants/github';
+import { 
+  loadRecentSearches, 
+  addRecentSearch, 
+  removeRecentSearch 
+} from '../utils/githubUtils';
 
 export default function useGitHubSearch() {
-  const [userInfo, setUserInfo] = useState({ status: 'idle', data: null });
+  const [userInfo, setUserInfo] = useState({ status: API_STATUS.IDLE, data: null });
   const [recentSearches, setRecentSearches] = useState([]);
 
   // localStorage에서 최근 검색어 로드
   useEffect(() => {
-    const savedSearches = localStorage.getItem(STORAGE_KEYS.RECENT_SEARCHES);
-    if (savedSearches) {
-      setRecentSearches(JSON.parse(savedSearches));
-    }
+    const savedSearches = loadRecentSearches();
+    setRecentSearches(savedSearches);
   }, []);
 
   // GitHub API 호출
@@ -22,26 +25,17 @@ export default function useGitHubSearch() {
       if (!response.ok) throw new Error('Network response was not ok');
       const data = await response.json();
       setUserInfo({ status: API_STATUS.RESOLVED, data });
-      saveSearch(username);
+      const updatedSearches = addRecentSearch(username, recentSearches);
+      setRecentSearches(updatedSearches);
     } catch {
       setUserInfo({ status: API_STATUS.REJECTED, data: null });
     }
   };
 
-  // 최근 검색어 저장
-  const saveSearch = (username) => {
-    if (!recentSearches.includes(username)) {
-      const updatedSearches = [...recentSearches, username];
-      setRecentSearches(updatedSearches);
-      localStorage.setItem(STORAGE_KEYS.RECENT_SEARCHES, JSON.stringify(updatedSearches));
-    }
-  };
-
   // 최근 검색어 삭제
   const removeSearch = (username) => {
-    const updatedSearches = recentSearches.filter(search => search !== username);
+    const updatedSearches = removeRecentSearch(username, recentSearches);
     setRecentSearches(updatedSearches);
-    localStorage.setItem(STORAGE_KEYS.RECENT_SEARCHES, JSON.stringify(updatedSearches));
   };
 
   // 사용자 정보 카드 닫기

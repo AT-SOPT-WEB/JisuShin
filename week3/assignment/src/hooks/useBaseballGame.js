@@ -1,6 +1,12 @@
 // src/hooks/useBaseballGame.js
 import { useState, useEffect, useCallback } from 'react';
 import { GAME_STATUS, GAME_SETTINGS, GAME_MESSAGES } from '../constants/baseball';
+import { 
+  generateAnswer, 
+  validateGuess, 
+  calculateResult, 
+  getResultMessage 
+} from '../utils/baseballUtils';
 
 export default function useBaseballGame() {
   // 게임 상태
@@ -11,15 +17,6 @@ export default function useBaseballGame() {
     status: GAME_STATUS.PLAYING,
     attempts: 0
   });
-  
-  // 랜덤 3자리 숫자 생성
-  const generateAnswer = useCallback(() => {
-    const numbers = Array.from({ length: 10 }, (_, i) => i); // [0, 1, 2, ..., 9]
-    const shuffled = [...numbers].sort(() => Math.random() - 0.5);
-    const answer = shuffled.slice(0, 3);
-    console.log('정답:', answer.join('')); // 테스트용 정답 출력
-    return answer;
-  }, []);
 
   // 게임 초기화
   const resetGame = useCallback(() => {
@@ -51,53 +48,6 @@ export default function useBaseballGame() {
     return () => clearTimeout(timer);
   }, [gameState.status, resetGame]);
 
-  // 숫자 유효성 검사
-  const validateGuess = (guess) => {
-    // 숫자만 입력 가능
-    if (!/^\d+$/.test(guess)) {
-      return { valid: false, message: GAME_MESSAGES.NUMERIC_ONLY };
-    }
-
-    // 3자리 이하 확인
-    if (guess.length > 3) {
-      return { valid: false, message: GAME_MESSAGES.MAX_DIGITS };
-    }
-
-    // 중복 숫자 확인
-    const digits = [...guess];
-    if (new Set(digits).size !== digits.length) {
-      return { valid: false, message: GAME_MESSAGES.UNIQUE_DIGITS };
-    }
-
-    return { valid: true, message: '' };
-  };
-
-  // 게임 결과 계산
-  const calculateResult = (guessDigits) => {
-    const { answer } = gameState;
-    const result = { strikes: 0, balls: 0 };
-    
-    guessDigits.forEach((digit, index) => {
-      const numDigit = Number(digit);
-      
-      if (numDigit === answer[index]) {
-        result.strikes++;
-      } else if (answer.includes(numDigit)) {
-        result.balls++;
-      }
-    });
-    
-    return result;
-  };
-
-  // 게임 결과 메시지 생성
-  const getResultMessage = (result) => {
-    const { strikes, balls } = result;
-    
-    if (strikes === 0 && balls === 0) return GAME_MESSAGES.OUT;
-    return GAME_MESSAGES.STRIKE_BALL(strikes, balls);
-  };
-
   // 게임 진행
   const makeGuess = (guess) => {
     // 이미 게임이 끝났으면 무시
@@ -113,7 +63,7 @@ export default function useBaseballGame() {
     // 시도 횟수 증가 및 결과 계산
     const guessDigits = [...guess];
     const newAttempts = gameState.attempts + 1;
-    const result = calculateResult(guessDigits);
+    const result = calculateResult(guessDigits, gameState.answer);
     const resultMessage = getResultMessage(result);
     
     // 새 추측 기록 생성
