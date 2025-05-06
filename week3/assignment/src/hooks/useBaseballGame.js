@@ -10,24 +10,20 @@ import {
 
 export default function useBaseballGame() {
   // 게임 상태
-  const [gameState, setGameState] = useState({
-    answer: [],
-    guesses: [],
-    message: '',
-    status: GAME_STATUS.PLAYING,
-    attempts: 0
-  });
+  const [answer, setAnswer] = useState([]);
+  const [guesses, setGuesses] = useState([]);
+  const [message, setMessage] = useState('');
+  const [status, setStatus] = useState(GAME_STATUS.PLAYING);
+  const [attempts, setAttempts] = useState(0);
 
   // 게임 초기화
   const resetGame = useCallback(() => {
-    setGameState({
-      answer: generateAnswer(),
-      guesses: [],
-      message: '',
-      status: 'playing',
-      attempts: 0
-    });
-  }, [generateAnswer]);
+    setAnswer(generateAnswer());
+    setGuesses([]);
+    setMessage('');
+    setStatus(GAME_STATUS.PLAYING);
+    setAttempts(0);
+  }, []);
 
   // 컴포넌트 마운트 시 게임 초기화
   useEffect(() => {
@@ -36,71 +32,63 @@ export default function useBaseballGame() {
 
   // 게임 종료 시 자동 리셋
   useEffect(() => {
-    const { status } = gameState;
-    
     if (status === GAME_STATUS.PLAYING) return;
     
     const delay = status === GAME_STATUS.WON 
       ? GAME_SETTINGS.RESET_DELAY.WIN
       : GAME_SETTINGS.RESET_DELAY.LOSE;
+    
     const timer = setTimeout(resetGame, delay);
     
     return () => clearTimeout(timer);
-  }, [gameState.status, resetGame]);
+  }, [status, resetGame]);
 
   // 게임 진행
   const makeGuess = (guess) => {
     // 이미 게임이 끝났으면 무시
-    if (gameState.status !== 'playing') return;
+    if (status !== GAME_STATUS.PLAYING) return;
     
     // 유효성 검사
     const validation = validateGuess(guess);
     if (!validation.valid) {
-      setGameState(prev => ({ ...prev, message: validation.message }));
+      setMessage(validation.message);
       return;
     }
 
     // 시도 횟수 증가 및 결과 계산
+    const newAttempts = attempts + 1;
+    setAttempts(newAttempts);
+    
     const guessDigits = [...guess];
-    const newAttempts = gameState.attempts + 1;
-    const result = calculateResult(guessDigits, gameState.answer);
+    const result = calculateResult(guessDigits, answer);
     const resultMessage = getResultMessage(result);
     
-    // 새 추측 기록 생성
+    // 새 추측 기록 추가
     const newGuess = { number: guess, result: resultMessage };
+    setGuesses(prev => [...prev, newGuess]);
     
-    // 게임 상태 업데이트 로직
-    setGameState(prev => {
-      const newState = {
-        ...prev,
-        guesses: [...prev.guesses, newGuess],
-        attempts: newAttempts
-      };
-      
+    // 승리 조건
+    if (result.strikes === 3) {
       // 승리 조건
-      if (result.strikes === 3) {
-        newState.message = GAME_MESSAGES.VICTORY;
-        newState.status = GAME_STATUS.WON;
-      } 
+      setMessage(GAME_MESSAGES.VICTORY);
+      setStatus(GAME_STATUS.WON);
+    } 
+    else if (newAttempts >= GAME_SETTINGS.MAX_ATTEMPTS) {
       // 패배 조건
-      else if (newAttempts >= GAME_SETTINGS.MAX_ATTEMPTS) {
-        newState.message = GAME_MESSAGES.DEFEAT;
-        newState.status = GAME_STATUS.LOST;
-      } 
+      setMessage(GAME_MESSAGES.DEFEAT);
+      setStatus(GAME_STATUS.LOST);
+    } 
+    else {
       // 계속 진행
-      else {
-        newState.message = `${result.strikes} 스트라이크 ${result.balls} 볼`;
-      }
-      
-      return newState;
-    });
+      setMessage(GAME_MESSAGES.STRIKE_BALL(result.strikes, result.balls));
+    }
   };
 
   return {
-    guesses: gameState.guesses,
-    message: gameState.message,
-    status: gameState.status,
-    attempts: gameState.attempts,
+    guesses,
+    message,
+    status,
+    attempts,
     maxAttempts: GAME_SETTINGS.MAX_ATTEMPTS,
     makeGuess,
     resetGame
