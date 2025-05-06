@@ -8,7 +8,7 @@ function GitHubSearchPage() {
   const { userInfo, recentSearches, getUserInfo, removeSearch, clearUserInfo } = useGitHubSearch();
 
   return (
-    <>
+    <div className="p-4">
       <SearchBar onSearch={getUserInfo} />
       <RecentSearches 
         searches={recentSearches} 
@@ -18,7 +18,7 @@ function GitHubSearchPage() {
       {userInfo.status === 'resolved' && (
         <UserCard userInfo={userInfo} onClose={clearUserInfo} />
       )}
-    </>
+    </div>
   );
 }
 
