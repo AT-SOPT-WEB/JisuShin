@@ -1,4 +1,4 @@
-import GameInput from '../baseball/GameInput';
+import InputForm from '../common/InputForm';
 import GameMessage from '../baseball/GameMessage';
 import GameHistoryList from '../baseball/GameHistoryList';
 import useBaseballGame from '../../hooks/useBaseballGame';
@@ -15,7 +15,13 @@ function BaseballGame() {
 
   return (
     <div className="p-4">
-      <GameInput onSubmit={makeGuess} gameStatus={status} />
+      <InputForm
+        onSubmit={makeGuess}
+        placeholder="3자리 숫자를 입력해주세요."
+        disabled={status !== GAME_STATUS.PLAYING}
+        maxLength={3}
+        autoFocus
+      />
       <GameMessage 
         message={message} 
         attempts={attempts} 
