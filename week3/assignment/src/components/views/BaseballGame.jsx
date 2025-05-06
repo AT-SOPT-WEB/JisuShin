@@ -2,6 +2,7 @@ import InputForm from '../common/InputForm';
 import GameMessage from '../baseball/GameMessage';
 import GameHistoryList from '../baseball/GameHistoryList';
 import useBaseballGame from '../../hooks/useBaseballGame';
+import { GAME_STATUS } from '../../constants/baseball';
 
 function BaseballGame() {
   const { 
