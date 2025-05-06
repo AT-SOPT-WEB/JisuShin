@@ -1,4 +1,3 @@
-// src/components/BaseballGame/GameHistoryList.jsx
 function GameHistoryList({ guesses }) {
   if (guesses.length === 0) return null;
   
@@ -7,11 +6,10 @@ function GameHistoryList({ guesses }) {
       {guesses.map((guess, index) => (
         <div 
           key={index} 
-          className="bg-blue-50 p-3 rounded-lg text-center flex justify-between items-center"
+          className="bg-blue-50 p-3 rounded-lg flex items-center"
         >
-          <span className="text-gray-500">#{index + 1}</span>
-          <span className="font-medium">{guess.number} - {guess.result}</span>
-          <span className="w-4"></span> {/* 균형을 위한 빈 공간 */}
+          <span className="text-gray-500 w-10">#{index + 1}</span>
+          <span className="font-medium flex-grow text-center">{guess.number} - {guess.result}</span>
         </div>
       ))}
     </div>

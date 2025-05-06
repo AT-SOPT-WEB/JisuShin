@@ -1,4 +1,3 @@
-// src/components/GitHubSearch/SearchBar.jsx
 import { useState } from 'react';
 import Input from '../common/Input';
 

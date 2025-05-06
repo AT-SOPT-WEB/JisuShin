@@ -1,4 +1,3 @@
-// src/hooks/useGitHubSearch.js
 import { useState, useEffect } from 'react';
 import { API_STATUS, STORAGE_KEYS } from '../constants/github';
 import { 

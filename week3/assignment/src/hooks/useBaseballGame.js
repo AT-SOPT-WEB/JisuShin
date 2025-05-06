@@ -1,4 +1,3 @@
-// src/hooks/useBaseballGame.js
 import { useState, useEffect, useCallback } from 'react';
 import { GAME_STATUS, GAME_SETTINGS, GAME_MESSAGES } from '../constants/baseball';
 import { 
