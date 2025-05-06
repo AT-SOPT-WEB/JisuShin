@@ -1,11 +1,10 @@
-// src/components/GitHubSearch/GitHubSearchPage.jsx
-import SearchBar from './SearchBar';
-import UserCard from './UserCard';
-import RecentSearches from './RecentSearches';
+import SearchBar from '../github/SearchBar';
+import UserCard from '../github/UserCard';
+import RecentSearches from '../github/RecentSearches';
 import useGitHubSearch from '../../hooks/useGitHubSearch';
 import { API_STATUS } from '../../constants/github';
 
-function GitHubSearchPage() {
+function GitHubSearch() {
   const { userInfo, recentSearches, getUserInfo, removeSearch, clearUserInfo } = useGitHubSearch();
 
   return (
@@ -23,4 +22,4 @@ function GitHubSearchPage() {
   );
 }
 
-export default GitHubSearchPage;
+export default GitHubSearch;

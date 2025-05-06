@@ -1,10 +1,9 @@
-// src/components/BaseballGame/BaseballGamePage.jsx
+import GameInput from '../baseball/GameInput';
+import GameMessage from '../baseball/GameMessage';
+import GameHistoryList from '../baseball/GameHistoryList';
 import useBaseballGame from '../../hooks/useBaseballGame';
-import GameInput from './GameInput';
-import GameMessage from './GameMessage';
-import GameHistoryList from './GameHistoryList';
 
-function BaseballGamePage() {
+function BaseballGame() {
   const { 
     guesses, 
     message, 
@@ -28,4 +27,4 @@ function BaseballGamePage() {
   );
 }
 
-export default BaseballGamePage;
+export default BaseballGame;
