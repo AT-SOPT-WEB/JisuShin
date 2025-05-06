@@ -1,4 +1,5 @@
-// src/components/GitHubSearch/RecentSearches.jsx
+import Button from '../common/Button';
+
 function RecentSearches({ searches, onRemove, onSelect }) {
   if (searches.length === 0) return null;
   
@@ -17,12 +18,14 @@ function RecentSearches({ searches, onRemove, onSelect }) {
             >
               {search}
             </span>
-            <button
+            <Button
+              variant="close"
               onClick={() => onRemove(search)}
-              className="text-gray-500 hover:text-gray-700"
+              className="w-5 h-5 text-sm text-gray-500 hover:text-gray-700"
+              aria-label="Remove search"
             >
               ✕
-            </button>
+            </Button>
           </div>
         ))}
       </div>

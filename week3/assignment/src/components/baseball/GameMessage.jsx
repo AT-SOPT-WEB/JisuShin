@@ -1,9 +1,10 @@
-// src/components/BaseballGame/GameMessage.jsx
+import { GAME_STATUS } from '../../constants/baseball';
+
 function GameMessage({ message, attempts, maxAttempts, gameStatus }) {
   // 메시지 스타일 결정
   const getMessageStyle = () => {
-    if (gameStatus === 'won') return 'text-green-600 font-bold';
-    if (gameStatus === 'lost') return 'text-red-600 font-bold';
+    if (gameStatus === GAME_STATUS.WON) return 'text-green-600 font-bold';
+    if (gameStatus === GAME_STATUS.LOST) return 'text-red-600 font-bold';
     return '';
   };
 

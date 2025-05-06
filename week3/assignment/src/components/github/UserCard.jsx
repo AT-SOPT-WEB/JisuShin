@@ -1,15 +1,17 @@
-// src/components/GitHubSearch/UserCard.jsx
+import Button from '../common/Button';
+
 function UserCard({ userInfo, onClose }) {
   const { data } = userInfo;
 
   return (
     <div className="bg-gray-800 text-white p-6 rounded-lg shadow-md relative mb-6">
-      <button
+      <Button
         onClick={onClose}
         className="absolute top-3 right-3 bg-blue-500 text-white rounded-full w-8 h-8 flex items-center justify-center hover:bg-blue-600"
+        aria-label="Close"
       >
         ✕
-      </button>
+      </Button>
       <div className="flex flex-col items-center mb-4">
         <a href={data.html_url} target="_blank" rel="noopener noreferrer">
           <img
