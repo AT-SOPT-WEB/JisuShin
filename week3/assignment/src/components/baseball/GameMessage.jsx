@@ -1,14 +1,14 @@
 import { GAME_STATUS } from '../../constants/baseball';
+import classNames from 'classnames';
 
 function GameMessage({ message, attempts, maxAttempts, gameStatus }) {
-  // 메시지 스타일 결정
-  const getMessageStyle = () => {
-    if (gameStatus === GAME_STATUS.WON) return 'text-green-600 font-bold';
-    if (gameStatus === GAME_STATUS.LOST) return 'text-red-600 font-bold';
-    return '';
-  };
-
   const isAlert = gameStatus === GAME_STATUS.WON || gameStatus === GAME_STATUS.LOST;
+
+  // classNames 라이브러리를 사용한 조건부 스타일링
+  const messageClasses = classNames('text-lg', {
+    'text-green-600 font-bold': gameStatus === GAME_STATUS.WON,
+    'text-red-600 font-bold': gameStatus === GAME_STATUS.LOST
+  });
 
   return (
     <div className="text-center mb-6">
@@ -19,7 +19,7 @@ function GameMessage({ message, attempts, maxAttempts, gameStatus }) {
       )}
       {message && (
         <p 
-          className={`text-lg ${getMessageStyle()}`}
+          className={messageClasses}
           role={isAlert ? "alert" : "status"}
           aria-live={isAlert ? "assertive" : "polite"}
         >

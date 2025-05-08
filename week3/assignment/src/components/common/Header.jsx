@@ -1,5 +1,6 @@
 import React from 'react';
 import Button from './Button';
+import { TAB_TYPES } from '../../constants/tabs';
 
 function Header({ currentTab, setCurrentTab }) {
   return (
@@ -8,14 +9,14 @@ function Header({ currentTab, setCurrentTab }) {
         <h1 className="text-xl font-bold mb-4 text-center">⚾ 숫자야구 || 깃허브 검색 🤔</h1>
         <div className="flex justify-center space-x-4">
           <Button
-            variant={currentTab === 'github' ? 'secondary' : 'primary'}
-            onClick={() => setCurrentTab('github')}
+            variant={currentTab === TAB_TYPES.GITHUB && 'secondary'}
+            onClick={() => setCurrentTab(TAB_TYPES.GITHUB)}
           >
             깃허브 검색 🔍
           </Button>
           <Button
-            variant={currentTab === 'baseball' ? 'secondary' : 'primary'}
-            onClick={() => setCurrentTab('baseball')}
+            variant={currentTab === TAB_TYPES.BASEBALL && 'secondary'}
+            onClick={() => setCurrentTab(TAB_TYPES.BASEBALL)}
           >
             숫자야구 ⚾
           </Button>

@@ -63,7 +63,11 @@ export default function useBaseballGame() {
     const resultMessage = getResultMessage(result);
     
     // 새 추측 기록 추가
-    const newGuess = { number: guess, result: resultMessage };
+    const newGuess = { 
+      id: `guess_${Date.now()}`,
+      number: guess, 
+      result: resultMessage 
+    };
     setGuesses(prev => [...prev, newGuess]);
     
     // 승리 조건
