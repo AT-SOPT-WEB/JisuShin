@@ -12,9 +12,10 @@ export const client = axios.create({
 // 요청 인터셉터 - 토큰이 필요한 요청에 토큰 추가
 client.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('userId');
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+    const userId = localStorage.getItem('userId');
+    if (userId) {
+      // API 명세에 맞게 userId 헤더 설정
+      config.headers.userId = userId;
     }
     return config;
   },

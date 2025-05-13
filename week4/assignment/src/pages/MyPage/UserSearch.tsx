@@ -1,38 +1,43 @@
 import React, { useState } from 'react';
-
-interface User {
-  id: string;
-  nickname: string;
-  email: string;
-}
+import { searchUsers } from '../../api/userService';
+import { 
+  form, 
+  searchContainer, 
+  input, 
+  button, 
+  searchButton, 
+  memberList, 
+  memberItem, 
+  memberName 
+} from './styles.css';
 
 const UserSearch: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
-  const [users, setUsers] = useState<User[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [nicknames, setNicknames] = useState<string[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [searched, setSearched] = useState(false);
 
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
     
     try {
-      // API 연동 (나중에 구현)
-      console.log('Searching for:', searchTerm);
-      
-      // 임시 데이터
-      setTimeout(() => {
-        const mockUsers = [
-          { id: '1', nickname: '사용자1', email: 'user1@example.com' },
-          { id: '2', nickname: '사용자2', email: 'user2@example.com' },
-          { id: '3', nickname: '사용자3', email: 'user3@example.com' },
-        ];
-        
-        setUsers(mockUsers);
-        setIsLoading(false);
-      }, 500);
-    } catch (error) {
-      console.error('Search error:', error);
-      setIsLoading(false);
+      setLoading(true);
+      setError('');
+
+      const response = await searchUsers(searchTerm);
+
+      if (response.success) {
+        setNicknames(response.data?.nicknameList || []);
+        setSearched(true);
+      } else {
+        setError(response.message);
+      }
+    } catch (error: any) {
+      console.error('Failed to search users:', error);
+      setError(error.response?.data?.message || '회원 검색 중 오류가 발생했습니다.');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -40,62 +45,45 @@ const UserSearch: React.FC = () => {
     <div>
       <h2>회원 조회</h2>
       
-      <form onSubmit={handleSearch}>
-        <div style={{ display: 'flex', marginBottom: '20px', gap: '10px' }}>
+      <form onSubmit={handleSearch} className={form}>
+        <div className={searchContainer}>
           <input
             type="text"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            placeholder="회원 검색"
-            style={{
-              flex: 1,
-              padding: '12px',
-              borderRadius: '5px',
-              border: '1px solid #e0e0e0',
-              fontSize: '16px'
-            }}
+            placeholder="닉네임으로 검색 (비워두면 전체 조회)"
+            className={input}
           />
           <button 
             type="submit" 
-            disabled={isLoading}
-            style={{
-              backgroundColor: '#4CAF50',
-              color: '#ffffff',
-              padding: '10px 20px',
-              borderRadius: '5px',
-              cursor: 'pointer',
-              fontSize: '16px',
-              fontWeight: 'bold',
-              border: 'none'
-            }}
+            disabled={loading}
+            className={`${button} ${searchButton}`}
           >
-            {isLoading ? '검색 중...' : '확인'}
+            {loading ? '검색 중...' : '확인'}
           </button>
         </div>
       </form>
+
+      {error && <p style={{ color: 'red', marginBottom: '15px' }}>{error}</p>}
       
-      {users.length > 0 ? (
-        <div style={{ 
-          backgroundColor: '#ffffff',
-          borderRadius: '10px',
-          boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
-          overflow: 'hidden'
-        }}>
-          {users.map((user) => (
-            <div 
-              key={user.id} 
-              style={{ 
-                padding: '15px',
-                borderBottom: '1px solid #e0e0e0'
-              }}
-            >
-              <div style={{ fontWeight: 'bold', marginBottom: '5px' }}>{user.nickname}</div>
-              <div style={{ color: '#666666', fontSize: '14px' }}>{user.email}</div>
-            </div>
-          ))}
+      {searched && (
+        <div>
+          <h3>검색 결과</h3>
+          {nicknames.length > 0 ? (
+            <ul className={memberList}>
+              {nicknames.map((nickname, index) => (
+                <li 
+                  key={index}
+                  className={memberItem}
+                >
+                  <div className={memberName}>{nickname}</div>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p>검색 결과가 없습니다.</p>
+          )}
         </div>
-      ) : (
-        <p>검색 결과가 없습니다.</p>
       )}
     </div>
   );

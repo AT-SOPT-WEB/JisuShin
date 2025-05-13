@@ -1,4 +1,11 @@
 import React, { useState } from 'react';
+import { updateNickname } from '../../api/userService';
+import { 
+  form, 
+  inputGroup, 
+  input, 
+  button 
+} from './styles.css';
 
 interface MyInfoProps {
   nickname: string;
@@ -7,25 +14,36 @@ interface MyInfoProps {
 
 const MyInfo: React.FC<MyInfoProps> = ({ nickname, onUpdateNickname }) => {
   const [newNickname, setNewNickname] = useState(nickname);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (!newNickname.trim()) {
-      alert('닉네임을 입력해주세요.');
+      setError('닉네임을 입력해주세요.');
       return;
     }
     
     try {
-      // API 연동 (나중에 구현)
-      console.log('Update nickname to:', newNickname);
+      setLoading(true);
+      setError('');
+      setSuccess('');
       
-      // 닉네임 업데이트 성공
-      onUpdateNickname(newNickname);
-      alert('닉네임이 변경되었습니다.');
-    } catch (error) {
-      alert('닉네임 변경에 실패했습니다.');
-      console.error('Update nickname error:', error);
+      const response = await updateNickname({ nickname: newNickname });
+      
+      if (response.success) {
+        setSuccess('닉네임이 성공적으로 변경되었습니다.');
+        onUpdateNickname(newNickname);
+      } else {
+        setError(response.message);
+      }
+    } catch (error: any) {
+      console.error('Failed to update nickname:', error);
+      setError(error.response?.data?.message || '닉네임 변경 중 오류가 발생했습니다.');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -33,8 +51,8 @@ const MyInfo: React.FC<MyInfoProps> = ({ nickname, onUpdateNickname }) => {
     <div>
       <h2>내 정보 수정하기</h2>
       
-      <form onSubmit={handleSubmit}>
-        <div>
+      <form onSubmit={handleSubmit} className={form}>
+        <div className={inputGroup}>
           <label htmlFor="nickname">새 닉네임</label>
           <input
             id="nickname"
@@ -42,32 +60,19 @@ const MyInfo: React.FC<MyInfoProps> = ({ nickname, onUpdateNickname }) => {
             value={newNickname}
             onChange={(e) => setNewNickname(e.target.value)}
             placeholder="새 닉네임을 입력하세요"
-            style={{
-              width: '100%',
-              padding: '12px',
-              borderRadius: '5px',
-              border: '1px solid #e0e0e0',
-              fontSize: '16px',
-              marginTop: '5px',
-              marginBottom: '15px'
-            }}
+            className={input}
           />
         </div>
+
+        {error && <p style={{ color: 'red', marginBottom: '15px' }}>{error}</p>}
+        {success && <p style={{ color: 'green', marginBottom: '15px' }}>{success}</p>}
         
         <button 
-          type="submit"
-          style={{
-            backgroundColor: '#4CAF50',
-            color: '#ffffff',
-            padding: '10px 20px',
-            borderRadius: '5px',
-            cursor: 'pointer',
-            fontSize: '16px',
-            fontWeight: 'bold',
-            border: 'none'
-          }}
+          type="submit" 
+          disabled={loading}
+          className={button}
         >
-          저장
+          {loading ? '저장 중...' : '저장'}
         </button>
       </form>
     </div>

@@ -98,3 +98,18 @@ export const memberEmail = style({
   color: '#666666',
   fontSize: vars.fontSizes.small,
 });
+
+export const errorMessage = style({
+  color: 'red',
+  marginBottom: '15px',
+});
+
+export const successMessage = style({
+  color: 'green',
+  marginBottom: '15px',
+});
+
+export const loadingText = style({
+  textAlign: 'center',
+  margin: '20px 0',
+});
