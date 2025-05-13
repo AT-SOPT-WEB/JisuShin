@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { signUp } from '../../api/authService'; 
 import { 
   container, 
   formContainer, 
@@ -28,15 +29,77 @@ const SignUp: React.FC = () => {
   const [passwordConfirm, setPasswordConfirm] = useState('');
   const [nickname, setNickname] = useState('');
   const [error, setError] = useState('');
+  const [idError, setIdError] = useState('');
+  const [passwordError, setPasswordError] = useState('');
   
   const navigate = useNavigate();
+
+  // 아이디 유효성 검사
+  useEffect(() => {
+    if (id) {
+      if (id.length < 8) {
+        setIdError('아이디는 8자 이상이어야 합니다.');
+      } else if (id.length > 20) {
+        setIdError('아이디는 20자 이하여야 합니다.');
+      } else if (!/^[a-zA-Z0-9]+$/.test(id)) {
+        setIdError('아이디는 대소문자/숫자만 사용 가능합니다.');
+      } else {
+        setIdError('');
+      }
+    } else {
+      setIdError('');
+    }
+  }, [id]);
+
+  // 비밀번호 유효성 검사
+  useEffect(() => {
+    if (password) {
+      if (password.length < 8) {
+        setPasswordError('비밀번호는 8자 이상이어야 합니다.');
+      } else if (password.length > 20) {
+        setPasswordError('비밀번호는 20자 이하여야 합니다.');
+      } else if (!/^[a-zA-Z0-9]+$/.test(password)) {
+        setPasswordError('비밀번호는 대소문자/숫자만 사용 가능합니다.');
+      } else if (passwordConfirm && password !== passwordConfirm) {
+        setPasswordError('비밀번호가 일치하지 않습니다.');
+      } else {
+        setPasswordError('');
+      }
+    } else {
+      setPasswordError('');
+    }
+  }, [password, passwordConfirm]);
 
   // 다음 단계로 이동
   const goToNextStep = () => {
     setError('');
+
+    // 현재 단계에서의 유효성 검사
     if (step === SignUpStep.ID) {
+      if (id.trim() === '') {
+        setIdError('아이디를 입력해주세요.');
+        return;
+      }
+      if (idError) {
+        return;
+      }
       setStep(SignUpStep.PASSWORD);
     } else if (step === SignUpStep.PASSWORD) {
+      if (password.trim() === '') {
+        setPasswordError('비밀번호를 입력해주세요.');
+        return;
+      }
+      if (passwordConfirm.trim() === '') {
+        setPasswordError('비밀번호 확인을 입력해주세요.');
+        return;
+      }
+      if (password !== passwordConfirm) {
+        setPasswordError('비밀번호가 일치하지 않습니다.');
+        return;
+      }
+      if (passwordError) {
+        return;
+      }
       setStep(SignUpStep.NICKNAME);
     }
   };
@@ -46,15 +109,34 @@ const SignUp: React.FC = () => {
     e.preventDefault();
     setError('');
 
+    if (nickname.trim() === '') {
+      setError('닉네임을 입력해주세요.');
+      return;
+    }
+
     try {
-      // API 연동 부분 (나중에 구현)
-      console.log('Sign up with:', { id, password, nickname });
+      // API 호출
+      const response = await signUp({
+        loginId: id,
+        password: password,
+        nickname: nickname
+      });
       
-      // 회원가입 성공 시 처리
-      alert('회원가입에 성공했습니다!');
-      navigate('/login');
-    } catch (error) {
-      setError('회원가입에 실패했습니다.');
+      if (response.success) {
+        // 회원가입 성공
+        alert(`${response.data?.nickname}님, 회원가입에 성공했습니다!`);
+        navigate('/login');
+      } else {
+        // 서버에서 오류 메시지를 보낸 경우
+        setError(response.message);
+      }
+    } catch (error: any) {
+      // 네트워크 오류 등 예외 처리
+      if (error.response && error.response.data) {
+        setError(error.response.data.message || '회원가입에 실패했습니다.');
+      } else {
+        setError('회원가입 중 오류가 발생했습니다.');
+      }
       console.error('Sign up error:', error);
     }
   };
@@ -67,20 +149,15 @@ const SignUp: React.FC = () => {
   // 버튼 활성화 여부 확인
   const isButtonDisabled = () => {
     if (step === SignUpStep.ID) {
-      return id.trim() === '';
+      return id.trim() === '' || idError !== '';
     } else if (step === SignUpStep.PASSWORD) {
-      return password.trim() === '' || passwordConfirm.trim() === '' || password !== passwordConfirm;
+      return password.trim() === '' || 
+             passwordConfirm.trim() === '' || 
+             password !== passwordConfirm || 
+             passwordError !== '';
     } else {
       return nickname.trim() === '';
     }
-  };
-
-  // 비밀번호 오류 메시지
-  const getPasswordError = () => {
-    if (password && passwordConfirm && password !== passwordConfirm) {
-      return '비밀번호가 일치하지 않습니다.';
-    }
-    return '';
   };
 
   return (
@@ -98,6 +175,7 @@ const SignUp: React.FC = () => {
                 onChange={(e) => setId(e.target.value)}
                 className={input}
               />
+              {idError && <div className={errorText}>{idError}</div>}
             </div>
           )}
           
@@ -121,7 +199,7 @@ const SignUp: React.FC = () => {
                   onChange={(e) => setPasswordConfirm(e.target.value)}
                   className={input}
                 />
-                {getPasswordError() && <div className={errorText}>{getPasswordError()}</div>}
+                {passwordError && <div className={errorText}>{passwordError}</div>}
               </div>
             </>
           )}
