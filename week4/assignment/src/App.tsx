@@ -4,6 +4,7 @@ import { themeClass } from './styles/theme.css';
 import './styles/reset.css';
 import './styles/global.css';
 import Login from './pages/Login';
+import SignUp from './pages/SignUp';
 
 function App() {
   return (
@@ -11,6 +12,8 @@ function App() {
       <Router>
         <Routes>
           <Route path="/" element={<Login />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<SignUp />} />
         </Routes>
       </Router>
     </div>
