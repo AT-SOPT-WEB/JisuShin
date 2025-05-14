@@ -18,6 +18,7 @@ export const nav = style({
 export const navItem = style({
   cursor: 'pointer',
   transition: 'opacity 0.2s',
+  padding: '5px 0',
   ':hover': {
     opacity: 0.8,
   },
@@ -30,4 +31,7 @@ export const activeNavItem = style({
 
 export const userName = style({
   fontWeight: 'bold',
+  padding: '5px 10px',
+  borderRadius: '4px',
+  backgroundColor: 'rgba(255, 255, 255, 0.2)',
 });

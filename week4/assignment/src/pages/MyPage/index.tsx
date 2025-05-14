@@ -5,11 +5,13 @@ import { getMyInfo } from '../../api/userService';
 import MyInfo from './MyInfo';
 import UserSearch from './UserSearch';
 import { 
-  container, 
-  content, 
-  tabsContainer, 
-  tab, 
-  activeTab 
+  container,
+  content,
+  header,
+  tabsContainer,
+  tab,
+  activeTab,
+  userNameContainer
 } from './styles.css';
 
 // 마이페이지 탭 정의
@@ -70,20 +72,24 @@ const MyPage: React.FC = () => {
     setNickname(newNickname);
   };
 
+  const handleTabChange = (tab: MyPageTab) => {
+    setCurrentTab(tab);
+  };
+
   return (
     <div className={container}>
       {/* 헤더 */}
-      <header>
+      <header className={header}>
         <div className={tabsContainer}>
           <div 
             className={`${tab} ${currentTab === MyPageTab.MY_INFO ? activeTab : ''}`}
-            onClick={() => setCurrentTab(MyPageTab.MY_INFO)}
+            onClick={() => handleTabChange(MyPageTab.MY_INFO)}
           >
             내 정보
           </div>
           <div 
             className={`${tab} ${currentTab === MyPageTab.USER_SEARCH ? activeTab : ''}`}
-            onClick={() => setCurrentTab(MyPageTab.USER_SEARCH)}
+            onClick={() => handleTabChange(MyPageTab.USER_SEARCH)}
           >
             회원 조회
           </div>
@@ -94,7 +100,7 @@ const MyPage: React.FC = () => {
             로그아웃
           </div>
         </div>
-        <div>{nickname}</div>
+        <div className={userNameContainer}>{nickname}</div>
       </header>
       
       {/* 콘텐츠 */}

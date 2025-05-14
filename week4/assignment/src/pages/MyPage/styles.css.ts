@@ -15,23 +15,40 @@ export const content = style({
   width: '100%',
 });
 
+export const header = style({
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  padding: '15px 20px',
+  backgroundColor: vars.colors.primary,
+  color: '#FFFFFF',
+});
+
 export const tabsContainer = style({
   display: 'flex',
-  marginBottom: '20px',
+  gap: '20px',
 });
 
 export const tab = style({
-  padding: '10px 20px',
-  marginRight: '10px',
+  padding: '10px 0',
   cursor: 'pointer',
-  borderBottom: '2px solid transparent',
   transition: 'all 0.2s',
+  borderBottom: '2px solid transparent',
+  ':hover': {
+    opacity: 0.8,
+  },
 });
 
 export const activeTab = style({
-  borderBottom: `2px solid ${vars.colors.primary}`,
-  color: vars.colors.primary,
   fontWeight: 'bold',
+  borderBottom: '2px solid #FFFFFF',
+});
+
+export const userNameContainer = style({
+  fontWeight: 'bold',
+  padding: '5px 10px',
+  borderRadius: '4px',
+  backgroundColor: 'rgba(255, 255, 255, 0.2)',
 });
 
 export const form = style({
