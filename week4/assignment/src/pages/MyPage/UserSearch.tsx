@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
 import { searchUsers } from '../../api/userService';
+import Button from '../../components/common/Button';
 import { 
   form, 
   searchContainer, 
   input, 
-  button, 
-  searchButton, 
   memberList, 
   memberItem, 
-  memberName 
+  memberName,
+  searchResultContainer,
+  actionButton
 } from './styles.css';
 
 const UserSearch: React.FC = () => {
@@ -20,7 +21,7 @@ const UserSearch: React.FC = () => {
 
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     try {
       setLoading(true);
       setError('');
@@ -44,7 +45,7 @@ const UserSearch: React.FC = () => {
   return (
     <div>
       <h2>회원 조회</h2>
-      
+
       <form onSubmit={handleSearch} className={form}>
         <div className={searchContainer}>
           <input
@@ -54,20 +55,21 @@ const UserSearch: React.FC = () => {
             placeholder="닉네임으로 검색 (비워두면 전체 조회)"
             className={input}
           />
-          <button 
+          <Button 
             type="submit" 
             disabled={loading}
-            className={`${button} ${searchButton}`}
+            variant="primary"
+            className={actionButton}
           >
             {loading ? '검색 중...' : '확인'}
-          </button>
+          </Button>
         </div>
       </form>
 
       {error && <p style={{ color: 'red', marginBottom: '15px' }}>{error}</p>}
-      
+
       {searched && (
-        <div>
+        <div className={searchResultContainer}>
           <h3>검색 결과</h3>
           {nicknames.length > 0 ? (
             <ul className={memberList}>

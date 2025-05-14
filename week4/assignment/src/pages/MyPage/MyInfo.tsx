@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { updateNickname } from '../../api/userService';
+import Button from '../../components/common/Button';
 import { 
   form, 
-  inputGroup, 
   input, 
-  button 
+  searchContainer,
+  actionButton
 } from './styles.css';
 
 interface MyInfoProps {
@@ -18,17 +19,17 @@ const MyInfo: React.FC<MyInfoProps> = ({ nickname, onUpdateNickname }) => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!newNickname.trim()) {
       alert('닉네임을 입력해주세요.');
       return;
     }
-    
+
     try {
       setLoading(true);
-      
+
       const response = await updateNickname({ nickname: newNickname });
-      
+
       if (response.success) {
         alert('닉네임이 성공적으로 변경되었습니다.');
         onUpdateNickname(newNickname);
@@ -46,27 +47,25 @@ const MyInfo: React.FC<MyInfoProps> = ({ nickname, onUpdateNickname }) => {
   return (
     <div>
       <h2>내 정보 수정하기</h2>
-      
+
       <form onSubmit={handleSubmit} className={form}>
-        <div className={inputGroup}>
-          <label htmlFor="nickname">새 닉네임</label>
+        <div className={searchContainer}>
           <input
-            id="nickname"
             type="text"
             value={newNickname}
             onChange={(e) => setNewNickname(e.target.value)}
             placeholder="새 닉네임을 입력하세요"
             className={input}
           />
+          <Button 
+            type="submit" 
+            disabled={loading}
+            variant="primary"
+            className={actionButton}
+          >
+            {loading ? '저장 중...' : '저장'}
+          </Button>
         </div>
-
-        <button 
-          type="submit" 
-          disabled={loading}
-          className={button}
-        >
-          {loading ? '저장 중...' : '저장'}
-        </button>
       </form>
     </div>
   );

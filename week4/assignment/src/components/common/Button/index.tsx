@@ -5,6 +5,7 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: 'primary' | 'secondary';
   children: React.ReactNode;
   disabled?: boolean;
+  className?: string;
 }
 
 const Button: React.FC<ButtonProps> = ({ 
@@ -12,13 +13,14 @@ const Button: React.FC<ButtonProps> = ({
   children, 
   disabled = false, 
   onClick, 
+  className = '',
   ...props 
 }) => {
-  const buttonClass = disabled ? button.disabled : button[variant];
+  const buttonStyle = disabled ? button.disabled : button[variant];
 
   return (
     <button 
-      className={buttonClass} 
+      className={`${buttonStyle} ${className}`}
       disabled={disabled} 
       onClick={disabled ? undefined : onClick} 
       {...props}

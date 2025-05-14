@@ -107,6 +107,7 @@ export const input = style({
   borderRadius: vars.borderRadius.small,
   border: `1px solid ${vars.colors.border}`,
   fontSize: '1rem',
+  height: '2.75rem',
   transition: 'border-color 0.3s ease, box-shadow 0.3s ease',
   selectors: {
     '&:focus': {
@@ -114,25 +115,9 @@ export const input = style({
       borderColor: vars.colors.primary,
       boxShadow: `0 0 0 0.188rem ${vars.colors.secondary}`,
     },
-  },
-});
-
-export const button = style({
-  backgroundColor: vars.colors.primary,
-  color: '#ffffff',
-  padding: '0.75rem 1.5rem',
-  borderRadius: vars.borderRadius.small,
-  cursor: 'pointer',
-  fontSize: vars.fontSizes.medium,
-  fontWeight: 'bold',
-  border: 'none',
-  transition: 'background-color 0.3s ease',
-  selectors: {
-    '&:hover': {
-      backgroundColor: '#0089c1',
-    },
-    '&:active': {
-      backgroundColor: '#007ab0',
+    '&::placeholder': {
+      color: '#aabbc8',
+      opacity: 0.7,
     },
   },
 });
@@ -141,10 +126,12 @@ export const searchContainer = style({
   display: 'flex',
   marginBottom: '1.25rem',
   gap: '0.625rem',
+  alignItems: 'center',
 });
 
-export const searchButton = style({
-  marginLeft: '0.625rem',
+export const searchResultContainer = style({
+  marginTop: '2.5rem',
+  paddingTop: '1rem',
 });
 
 export const memberList = style({
@@ -152,6 +139,7 @@ export const memberList = style({
   borderRadius: vars.borderRadius.medium,
   boxShadow: vars.shadows.small,
   overflow: 'hidden',
+  marginTop: '1rem',
 });
 
 export const memberItem = style({
@@ -167,4 +155,9 @@ export const memberItem = style({
 export const memberName = style({
   fontWeight: 'bold',
   marginBottom: '0.313rem',
+});
+
+export const actionButton = style({
+  width: '6.25rem',
+  flexShrink: 0,
 });
