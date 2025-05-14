@@ -36,7 +36,7 @@ client.interceptors.response.use(
       console.error('API Error:', error.response.data);
       
       // 인증 에러인 경우 (401) - 로그인 페이지로 리다이렉트
-      if (error.response.status === 401) {
+      if (error.response.status === 401 && !window.location.pathname.includes('/login')) {
         localStorage.removeItem('userId');
         window.location.href = '/login';
       }
