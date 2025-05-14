@@ -134,3 +134,23 @@ export const loginLinkText = style({
 export const fadeIn = style({
   animation: `${fadeInAnimation} 0.5s ease-in-out`,
 });
+
+export const passwordInputContainer = style({
+  position: 'relative',
+  width: '100%',
+});
+
+export const passwordToggleIcon = style({
+  position: 'absolute',
+  right: '0.75rem',
+  top: '50%',
+  transform: 'translateY(-50%)',
+  width: '1.25rem',
+  height: '1.25rem',
+  cursor: 'pointer',
+  opacity: 0.7,
+  transition: 'opacity 0.2s ease',
+  ':hover': {
+    opacity: 1,
+  },
+});

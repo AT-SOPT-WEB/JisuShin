@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { signUp } from '../../api/authService'; 
+import { signUp } from '../../api/authService';
+import eyeIcon from '../../assets/icons/eye-solid.svg';
+import eyeSlashIcon from '../../assets/icons/eye-slash-solid.svg';
 import { 
   container, 
   formContainer, 
@@ -13,7 +15,9 @@ import {
   errorText, 
   loginLink, 
   loginLinkText,
-  inputLabel
+  inputLabel,
+  passwordInputContainer,
+  passwordToggleIcon
 } from './styles.css';
 
 enum SignUpStep {
@@ -32,6 +36,9 @@ const SignUp: React.FC = () => {
   const [passwordError, setPasswordError] = useState('');
   const [confirmError, setConfirmError] = useState('');
   const [nicknameError, setNicknameError] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
+  
   
   const navigate = useNavigate();
 
@@ -221,13 +228,21 @@ const SignUp: React.FC = () => {
             <>
               <div className={inputGroup}>
                 <div className={inputLabel}>비밀번호</div>
-                <input
-                  type="password"
-                  placeholder="비밀번호를 입력해주세요"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className={input}
-                />
+                <div className={passwordInputContainer}>
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    placeholder="비밀번호를 입력해주세요"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className={input}
+                  />
+                  <img 
+                      src={showPassword ? eyeIcon : eyeSlashIcon} 
+                      alt={showPassword ? "비밀번호 숨기기" : "비밀번호 보기"} 
+                      onClick={() => setShowPassword(!showPassword)}
+                      className={passwordToggleIcon}
+                    />
+                </div>
                 {passwordError && <div className={errorText}>{passwordError}</div>}
               </div>
 
