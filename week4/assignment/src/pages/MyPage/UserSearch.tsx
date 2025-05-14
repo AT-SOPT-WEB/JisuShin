@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { searchUsers } from '../../api/userService';
 import Button from '../../components/common/Button';
+import { AxiosError } from 'axios';
+import { ApiErrorResponse } from '../../types/api';
 import { 
   form, 
   searchContainer, 
@@ -34,9 +36,14 @@ const UserSearch: React.FC = () => {
       } else {
         setError(response.message);
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Failed to search users:', error);
-      setError(error.response?.data?.message || '회원 검색 중 오류가 발생했습니다.');
+      if (error instanceof AxiosError && error.response?.data) {
+        const errorData = error.response.data as ApiErrorResponse;
+        setError(errorData.message || '회원 검색 중 오류가 발생했습니다.');
+      } else {
+        setError('회원 검색 중 오류가 발생했습니다.');
+      }
     } finally {
       setLoading(false);
     }

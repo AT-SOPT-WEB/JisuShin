@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { signUp } from '../../api/authService';
 import eyeIcon from '../../assets/icons/eye-solid.svg';
 import eyeSlashIcon from '../../assets/icons/eye-slash-solid.svg';
+import { AxiosError } from 'axios';
+import { ApiErrorResponse } from '../../types/api';
 import { 
   container, 
   formContainer, 
@@ -162,10 +164,9 @@ const SignUp: React.FC = () => {
           setStep(SignUpStep.PASSWORD);
         }
       }
-    } catch (error: any) {
-
-      if (error.response && error.response.data) {
-        const errorData = error.response.data;
+    } catch (error: unknown) {
+      if (error instanceof AxiosError && error.response?.data) {
+        const errorData = error.response.data as ApiErrorResponse;
         alert(errorData.message || '회원가입에 실패했습니다.');
         if (errorData.message?.includes('아이디')) {
           setStep(SignUpStep.ID);
@@ -175,7 +176,6 @@ const SignUp: React.FC = () => {
       } else {
         alert('회원가입 중 오류가 발생했습니다.');
       }
-      console.error('Sign up error:', error);
     }
   };
 

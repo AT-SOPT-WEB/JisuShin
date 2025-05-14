@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { updateNickname } from '../../api/userService';
 import Button from '../../components/common/Button';
+import { AxiosError } from 'axios';
+import { ApiErrorResponse } from '../../types/api';
 import { 
   form, 
   input, 
@@ -27,7 +29,6 @@ const MyInfo: React.FC<MyInfoProps> = ({ nickname, onUpdateNickname }) => {
 
     try {
       setLoading(true);
-
       const response = await updateNickname({ nickname: newNickname });
 
       if (response.success) {
@@ -36,9 +37,13 @@ const MyInfo: React.FC<MyInfoProps> = ({ nickname, onUpdateNickname }) => {
       } else {
         alert(response.message || '닉네임 변경에 실패했습니다.');
       }
-    } catch (error: any) {
-      console.error('Failed to update nickname:', error);
-      alert(error.response?.data?.message || '닉네임 변경 중 오류가 발생했습니다.');
+    } catch (error: unknown) {
+      if (error instanceof AxiosError && error.response?.data) {
+        const errorData = error.response.data as ApiErrorResponse;
+        alert(errorData.message || '닉네임 변경에 실패했습니다.');
+      } else {
+        alert('닉네임 변경 중 오류가 발생했습니다.');
+      }
     } finally {
       setLoading(false);
     }

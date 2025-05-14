@@ -1,7 +1,18 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { login } from '../../api/authService';
-import { container, formContainer, title, inputGroup, input, loginButton, signupText, signupLink } from './styles.css';
+import { AxiosError } from 'axios';
+import { ApiErrorResponse } from '../../types/api';
+import { 
+  container, 
+  formContainer, 
+  title, 
+  inputGroup, 
+  input, 
+  loginButton, 
+  signupText, 
+  signupLink 
+} from './styles.css';
 
 const Login: React.FC = () => {
   const [id, setId] = useState('');
@@ -26,13 +37,13 @@ const Login: React.FC = () => {
       } else {
         setError(response.message);
       }
-    } catch (error: any) {
-      if (error.response && error.response.data) {
-        setError(error.response.data.message || '로그인에 실패했습니다.');
+    } catch (error: unknown) {
+      if (error instanceof AxiosError && error.response?.data) {
+        const errorData = error.response.data as ApiErrorResponse;
+        setError(errorData.message || '로그인에 실패했습니다.');
       } else {
         setError('로그인 중 오류가 발생했습니다.');
       }
-      console.error('Login error:', error);
     }
   };
 
