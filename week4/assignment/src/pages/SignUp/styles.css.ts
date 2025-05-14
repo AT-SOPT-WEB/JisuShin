@@ -1,5 +1,11 @@
-import { style } from '@vanilla-extract/css';
+import { style, keyframes } from '@vanilla-extract/css';
 import { vars } from '../../styles/theme.css';
+
+// keyframes 정의
+const fadeInAnimation = keyframes({
+  from: { opacity: 0, transform: 'translateY(0.625rem)' },
+  to: { opacity: 1, transform: 'translateY(0)' },
+});
 
 export const container = style({
   display: 'flex',
@@ -7,83 +13,124 @@ export const container = style({
   alignItems: 'center',
   justifyContent: 'center',
   minHeight: '100vh',
-  padding: '20px',
-  backgroundColor: '#f5f5f5',
+  padding: '1.25rem',
+  backgroundColor: vars.colors.lightBackground,
 });
 
 export const formContainer = style({
   width: '100%',
-  maxWidth: '400px',
-  padding: '40px',
-  borderRadius: '10px',
-  boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-  backgroundColor: '#ffffff',
+  maxWidth: '28.125rem',
+  padding: '2.5rem',
+  borderRadius: vars.borderRadius.medium,
+  boxShadow: vars.shadows.medium,
+  backgroundColor: vars.colors.background,
+  transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+  selectors: {
+    '&:hover': {
+      transform: 'translateY(-0.313rem)',
+      boxShadow: vars.shadows.large,
+    },
+  },
 });
 
 export const title = style({
-  fontSize: '24px',
+  fontSize: '1.75rem',
   fontWeight: 'bold',
   textAlign: 'center',
-  marginBottom: '30px',
+  marginBottom: '1.875rem',
+  color: vars.colors.primary,
 });
 
 export const inputGroup = style({
-  marginBottom: '15px',
+  marginBottom: '1.25rem',
 });
 
 export const input = style({
   width: '100%',
-  padding: '12px',
-  borderRadius: '5px',
-  border: '1px solid #e0e0e0',
-  fontSize: '16px',
+  padding: '0.75rem',
+  borderRadius: vars.borderRadius.small,
+  border: `1px solid ${vars.colors.border}`,
+  fontSize: '1rem',
+  transition: 'border-color 0.3s ease, box-shadow 0.3s ease',
+  selectors: {
+    '&:focus': {
+      outline: 'none',
+      borderColor: vars.colors.primary,
+      boxShadow: `0 0 0 0.188rem ${vars.colors.secondary}`,
+    },
+  },
 });
 
 export const inputLabel = style({
-  fontSize: '16px',
+  fontSize: '1rem',
   fontWeight: 'bold',
-  marginBottom: '8px',
+  marginBottom: '0.5rem',
+  color: vars.colors.text,
+  display: 'block',
 });
 
 export const button = style({
   width: '100%',
-  padding: '12px',
-  borderRadius: '5px',
+  padding: '0.875rem',
+  borderRadius: vars.borderRadius.small,
   fontSize: vars.fontSizes.medium,
   fontWeight: 'bold',
   cursor: 'pointer',
   border: 'none',
-  marginTop: '20px',
+  marginTop: '1.563rem',
+  transition: 'all 0.3s ease',
 });
 
 export const activeButton = style({
   backgroundColor: vars.colors.primary,
   color: '#ffffff',
+  selectors: {
+    '&:hover': {
+      backgroundColor: '#0089c1',
+    },
+    '&:active': {
+      backgroundColor: '#007ab0',
+    },
+  },
 });
 
 export const disabledButton = style({
   backgroundColor: '#cccccc',
   color: '#666666',
   cursor: 'not-allowed',
+  opacity: 0.7,
 });
 
 export const errorText = style({
   color: vars.colors.error,
   fontSize: vars.fontSizes.small,
-  marginTop: '5px',
+  marginTop: '0.5rem',
+  padding: '0.5rem',
+  borderRadius: vars.borderRadius.small,
+  backgroundColor: 'rgba(255, 107, 107, 0.1)',
 });
 
 export const loginLink = style({
   textAlign: 'center',
-  marginTop: '20px',
+  marginTop: '1.563rem',
   fontSize: vars.fontSizes.small,
+  color: vars.colors.text,
 });
 
 export const loginLinkText = style({
   color: vars.colors.primary,
   cursor: 'pointer',
-  marginLeft: '5px',
-  ':hover': {
-    textDecoration: 'underline',
+  marginLeft: '0.313rem',
+  fontWeight: 'bold',
+  transition: 'color 0.2s ease',
+  selectors: {
+    '&:hover': {
+      color: '#0089c1',
+      textDecoration: 'underline',
+    },
   },
+});
+
+export const fadeIn = style({
+  animation: `${fadeInAnimation} 0.5s ease-in-out`,
 });

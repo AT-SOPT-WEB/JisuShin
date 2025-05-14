@@ -5,12 +5,13 @@ export const container = style({
   display: 'flex',
   flexDirection: 'column',
   minHeight: '100vh',
+  backgroundColor: vars.colors.lightBackground,
 });
 
 export const content = style({
   flex: 1,
-  padding: '20px',
-  maxWidth: '800px',
+  padding: '1.875rem',
+  maxWidth: '56.25rem',
   margin: '0 auto',
   width: '100%',
 });
@@ -19,114 +20,151 @@ export const header = style({
   display: 'flex',
   justifyContent: 'space-between',
   alignItems: 'center',
-  padding: '15px 20px',
+  padding: '0.938rem 1.875rem',
   backgroundColor: vars.colors.primary,
   color: '#FFFFFF',
+  boxShadow: '0 0.125rem 0.625rem rgba(0, 157, 218, 0.2)',
 });
 
 export const tabsContainer = style({
   display: 'flex',
-  gap: '20px',
+  gap: '1.875rem',
 });
 
 export const tab = style({
-  padding: '10px 0',
+  padding: '0.625rem 0',
   cursor: 'pointer',
-  transition: 'all 0.2s',
-  borderBottom: '2px solid transparent',
-  ':hover': {
-    opacity: 0.8,
+  transition: 'all 0.3s ease',
+  position: 'relative',
+  fontWeight: '500',
+  color: 'rgba(255, 255, 255, 0.85)',
+  selectors: {
+    '&:hover': {
+      color: '#FFFFFF',
+    },
+    '&::after': {
+      content: '""',
+      position: 'absolute',
+      bottom: '0',
+      left: '0',
+      width: '0%',
+      height: '0.125rem',
+      backgroundColor: '#FFFFFF',
+      transition: 'width 0.3s ease',
+    },
+    '&:hover::after': {
+      width: '100%',
+    },
   },
 });
 
 export const activeTab = style({
   fontWeight: 'bold',
-  borderBottom: '2px solid #FFFFFF',
+  color: '#FFFFFF',
+  selectors: {
+    '&::after': {
+      content: '""',
+      position: 'absolute',
+      bottom: '0',
+      left: '0',
+      width: '100%',
+      height: '0.125rem',
+      backgroundColor: '#FFFFFF',
+    },
+  },
 });
 
 export const userNameContainer = style({
   fontWeight: 'bold',
-  padding: '5px 10px',
-  borderRadius: '4px',
+  padding: '0.5rem 1rem',
+  borderRadius: vars.borderRadius.small,
   backgroundColor: 'rgba(255, 255, 255, 0.2)',
+  backdropFilter: 'blur(5px)',
+  boxShadow: '0 0.125rem 0.5rem rgba(0, 0, 0, 0.1)',
 });
 
 export const form = style({
-  backgroundColor: '#ffffff',
-  padding: '20px',
-  borderRadius: '10px',
-  boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+  backgroundColor: vars.colors.background,
+  padding: '1.563rem',
+  borderRadius: vars.borderRadius.medium,
+  boxShadow: vars.shadows.medium,
+  transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+  selectors: {
+    '&:hover': {
+      transform: 'translateY(-0.188rem)',
+      boxShadow: vars.shadows.large,
+    },
+  },
 });
 
 export const inputGroup = style({
-  marginBottom: '15px',
+  marginBottom: '1.25rem',
 });
 
 export const input = style({
   width: '100%',
-  padding: '12px',
-  borderRadius: '5px',
-  border: '1px solid #e0e0e0',
-  fontSize: '16px',
+  padding: '0.75rem',
+  borderRadius: vars.borderRadius.small,
+  border: `1px solid ${vars.colors.border}`,
+  fontSize: '1rem',
+  transition: 'border-color 0.3s ease, box-shadow 0.3s ease',
+  selectors: {
+    '&:focus': {
+      outline: 'none',
+      borderColor: vars.colors.primary,
+      boxShadow: `0 0 0 0.188rem ${vars.colors.secondary}`,
+    },
+  },
 });
 
 export const button = style({
   backgroundColor: vars.colors.primary,
   color: '#ffffff',
-  padding: '10px 20px',
-  borderRadius: '5px',
+  padding: '0.75rem 1.5rem',
+  borderRadius: vars.borderRadius.small,
   cursor: 'pointer',
   fontSize: vars.fontSizes.medium,
   fontWeight: 'bold',
   border: 'none',
+  transition: 'background-color 0.3s ease',
+  selectors: {
+    '&:hover': {
+      backgroundColor: '#0089c1',
+    },
+    '&:active': {
+      backgroundColor: '#007ab0',
+    },
+  },
 });
 
 export const searchContainer = style({
   display: 'flex',
-  marginBottom: '20px',
-  gap: '10px',
+  marginBottom: '1.25rem',
+  gap: '0.625rem',
 });
 
 export const searchButton = style({
-  marginLeft: '10px',
+  marginLeft: '0.625rem',
 });
 
 export const memberList = style({
-  backgroundColor: '#ffffff',
-  borderRadius: '10px',
-  boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+  backgroundColor: vars.colors.background,
+  borderRadius: vars.borderRadius.medium,
+  boxShadow: vars.shadows.small,
   overflow: 'hidden',
 });
 
 export const memberItem = style({
-  padding: '15px',
+  padding: '0.938rem',
   borderBottom: '1px solid #e0e0e0',
-  ':last-child': {
-    borderBottom: 'none',
+  selectors: {
+    '&:last-child': {
+      borderBottom: 'none',
+    },
   },
 });
 
 export const memberName = style({
   fontWeight: 'bold',
-  marginBottom: '5px',
-});
-
-export const memberEmail = style({
-  color: '#666666',
-  fontSize: vars.fontSizes.small,
-});
-
-export const errorMessage = style({
-  color: 'red',
-  marginBottom: '15px',
-});
-
-export const successMessage = style({
-  color: 'green',
-  marginBottom: '15px',
-});
-
-export const loadingText = style({
-  textAlign: 'center',
-  margin: '20px 0',
+  marginBottom: '0.313rem',
 });
