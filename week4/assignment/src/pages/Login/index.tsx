@@ -14,7 +14,6 @@ const Login: React.FC = () => {
     setError('');
 
     try {
-      // API 호출
       const response = await login({
         loginId: id,
         password: password
@@ -23,15 +22,11 @@ const Login: React.FC = () => {
       if (response.success && response.data) {
         // 로그인 성공 - userId 저장
         localStorage.setItem('userId', response.data.userId.toString());
-        
-        // 마이페이지로 이동
         navigate('/mypage');
       } else {
-        // 서버에서 오류 메시지를 보낸 경우
         setError(response.message);
       }
     } catch (error: any) {
-      // 네트워크 오류 등 예외 처리
       if (error.response && error.response.data) {
         setError(error.response.data.message || '로그인에 실패했습니다.');
       } else {

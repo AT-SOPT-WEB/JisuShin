@@ -16,7 +16,6 @@ import {
   inputLabel
 } from './styles.css';
 
-// 회원가입 단계 정의
 enum SignUpStep {
   ID = 'id',
   PASSWORD = 'password',
@@ -96,9 +95,7 @@ const SignUp: React.FC = () => {
     }
   }, [nickname]);
 
-  // 다음 단계로 이동
   const goToNextStep = () => {
-    // 현재 단계에서의 유효성 검사
     if (step === SignUpStep.ID) {
       if (id.trim() === '') {
         setIdError('아이디를 입력해주세요.');
@@ -128,7 +125,6 @@ const SignUp: React.FC = () => {
     }
   };
 
-  // 회원가입 제출 처리
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -142,7 +138,6 @@ const SignUp: React.FC = () => {
     }
 
     try {
-      // API 호출
       const response = await signUp({
         loginId: id,
         password: password,
@@ -150,14 +145,10 @@ const SignUp: React.FC = () => {
       });
       
       if (response.success) {
-        // 회원가입 성공
         alert(`${response.data?.nickname}님, 회원가입에 성공했습니다!`);
         navigate('/login');
       } else {
-        // 서버에서 오류 메시지를 보낸 경우
         alert(response.message);
-        
-        // 오류 종류에 따라 적절한 단계로 이동
         if (response.message.includes('아이디')) {
           setStep(SignUpStep.ID);
         } else if (response.message.includes('비밀번호')) {
@@ -165,12 +156,10 @@ const SignUp: React.FC = () => {
         }
       }
     } catch (error: any) {
-      // 네트워크 오류 등 예외 처리
+
       if (error.response && error.response.data) {
         const errorData = error.response.data;
         alert(errorData.message || '회원가입에 실패했습니다.');
-        
-        // 오류 종류에 따라 적절한 단계로 이동
         if (errorData.message?.includes('아이디')) {
           setStep(SignUpStep.ID);
         } else if (errorData.message?.includes('비밀번호')) {
@@ -183,12 +172,10 @@ const SignUp: React.FC = () => {
     }
   };
 
-  // 로그인 페이지로 이동
   const goToLogin = () => {
     navigate('/login');
   };
 
-  // 버튼 활성화 여부 확인
   const isButtonDisabled = () => {
     if (step === SignUpStep.ID) {
       return id.trim() === '' || idError !== '';
@@ -197,13 +184,12 @@ const SignUp: React.FC = () => {
              passwordConfirm.trim() === '' || 
              password !== passwordConfirm || 
              passwordError !== '' ||
-             confirmError !== ''; // confirmError 체크 추가
+             confirmError !== '';
     } else {
-      return nickname.trim() === '' || nicknameError !== ''; // nicknameError 체크 추가
+      return nickname.trim() === '' || nicknameError !== '';
     }
   };
 
-  // 현재 단계에 맞는 버튼 텍스트 반환
   const getButtonText = () => {
     if (step === SignUpStep.NICKNAME) {
       return '회원가입 하기';

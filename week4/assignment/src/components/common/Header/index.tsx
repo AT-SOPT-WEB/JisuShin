@@ -17,7 +17,6 @@ const Header: React.FC<HeaderProps> = ({ nickname }) => {
   const handleLogout = () => {
     // 로그아웃 처리: localStorage에서 userId 제거
     localStorage.removeItem('userId');
-    // 로그인 페이지로 이동
     navigate('/login');
   };
 

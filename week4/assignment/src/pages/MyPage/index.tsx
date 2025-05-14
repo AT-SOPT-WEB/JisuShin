@@ -14,7 +14,6 @@ import {
   userNameContainer
 } from './styles.css';
 
-// 마이페이지 탭 정의
 enum MyPageTab {
   MY_INFO = 'myInfo',
   USER_SEARCH = 'userSearch',
@@ -28,7 +27,6 @@ const MyPage: React.FC = () => {
   
   const navigate = useNavigate();
 
-  // 내 정보 가져오기
   useEffect(() => {
     const fetchMyInfo = async () => {
       // 로그인 체크 (토큰 확인)

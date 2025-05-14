@@ -14,7 +14,6 @@ client.interceptors.request.use(
   (config) => {
     const userId = localStorage.getItem('userId');
     if (userId) {
-      // API 명세에 맞게 userId 헤더 설정
       config.headers.userId = userId;
     }
     return config;
@@ -30,7 +29,6 @@ client.interceptors.response.use(
     return response;
   },
   (error) => {
-    // 에러 응답 처리
     if (error.response) {
       // 서버에서 응답이 왔지만 상태 코드가 2xx가 아닌 경우
       console.error('API Error:', error.response.data);
