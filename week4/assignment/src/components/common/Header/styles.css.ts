@@ -1,5 +1,16 @@
-import { style } from '@vanilla-extract/css';
+import { style, keyframes } from '@vanilla-extract/css';
 import { vars } from '../../../styles/theme.css';
+
+const slideDown = keyframes({
+  from: { 
+    opacity: 0,
+    transform: 'translateY(-20px)'
+  },
+  to: { 
+    opacity: 1,
+    transform: 'translateY(0)' 
+  }
+});
 
 export const header = style({
   display: 'flex',
@@ -9,6 +20,7 @@ export const header = style({
   backgroundColor: vars.colors.primary,
   color: '#FFFFFF',
   boxShadow: '0 0.125rem 0.625rem rgba(0, 157, 218, 0.2)',
+  position: 'relative',
 });
 
 export const nav = style({
@@ -71,6 +83,44 @@ export const userName = style({
     '&:hover': {
       backgroundColor: 'rgba(255, 255, 255, 0.3)',
       transform: 'translateY(-0.125rem)',
+    },
+  },
+});
+
+export const menuIcon = style({
+  width: '1.5rem',
+  height: '1.5rem',
+  filter: 'brightness(0) invert(1)',
+  transition: 'transform 0.3s ease',
+  selectors: {
+    '&:hover': {
+      transform: 'scale(1.1)',
+    },
+  },
+});
+
+export const mobileNav = style({
+  position: 'absolute',
+  top: '100%',
+  left: 0,
+  width: '100%',
+  backgroundColor: vars.colors.primary,
+  boxShadow: '0 0.5rem 1rem rgba(0, 0, 0, 0.1)',
+  zIndex: 100,
+  animation: `${slideDown} 0.3s ease forwards`,
+});
+
+export const mobileNavItem = style({
+  padding: '1rem 1.875rem',
+  borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+  cursor: 'pointer',
+  transition: 'background-color 0.3s ease',
+  selectors: {
+    '&:hover': {
+      backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    },
+    '&:last-child': {
+      borderBottom: 'none',
     },
   },
 });
