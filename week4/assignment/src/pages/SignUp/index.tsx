@@ -33,7 +33,6 @@ const SignUp: React.FC = () => {
   const [passwordError, setPasswordError] = useState('');
   const [confirmError, setConfirmError] = useState('');
   const [nicknameError, setNicknameError] = useState('');
-  const [error, setError] = useState('');
   
   const navigate = useNavigate();
 
@@ -99,8 +98,6 @@ const SignUp: React.FC = () => {
 
   // 다음 단계로 이동
   const goToNextStep = () => {
-    setError('');
-
     // 현재 단계에서의 유효성 검사
     if (step === SignUpStep.ID) {
       if (id.trim() === '') {
@@ -134,7 +131,6 @@ const SignUp: React.FC = () => {
   // 회원가입 제출 처리
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
 
     if (nickname.trim() === '') {
       setNicknameError('닉네임을 입력해주세요.');
@@ -159,44 +155,31 @@ const SignUp: React.FC = () => {
         navigate('/login');
       } else {
         // 서버에서 오류 메시지를 보낸 경우
-        handleSignupError(response.code, response.message);
+        alert(response.message);
+        
+        // 오류 종류에 따라 적절한 단계로 이동
+        if (response.message.includes('아이디')) {
+          setStep(SignUpStep.ID);
+        } else if (response.message.includes('비밀번호')) {
+          setStep(SignUpStep.PASSWORD);
+        }
       }
     } catch (error: any) {
       // 네트워크 오류 등 예외 처리
       if (error.response && error.response.data) {
         const errorData = error.response.data;
-        handleSignupError(errorData.code, errorData.message || '회원가입에 실패했습니다.');
+        alert(errorData.message || '회원가입에 실패했습니다.');
+        
+        // 오류 종류에 따라 적절한 단계로 이동
+        if (errorData.message?.includes('아이디')) {
+          setStep(SignUpStep.ID);
+        } else if (errorData.message?.includes('비밀번호')) {
+          setStep(SignUpStep.PASSWORD);
+        }
       } else {
-        setError('회원가입 중 오류가 발생했습니다.');
+        alert('회원가입 중 오류가 발생했습니다.');
       }
       console.error('Sign up error:', error);
-    }
-  };
-
-  // 회원가입 오류 처리 함수
-  const handleSignupError = (code: string, message: string) => {
-    // 아이디 중복 오류 처리
-    if (code === 'USER_003') {
-      setStep(SignUpStep.ID); // 아이디 입력 단계로 되돌림
-      setIdError('이미 사용 중인 아이디입니다.');
-    } 
-    // 아이디 유효성 오류 처리
-    else if (message.includes('아이디')) {
-      setStep(SignUpStep.ID); // 아이디 입력 단계로 되돌림
-      setIdError(message);
-    } 
-    // 비밀번호 유효성 오류 처리
-    else if (message.includes('비밀번호')) {
-      setStep(SignUpStep.PASSWORD); // 비밀번호 입력 단계로 되돌림
-      setPasswordError(message);
-    } 
-    // 닉네임 유효성 오류 처리
-    else if (message.includes('닉네임')) {
-      setNicknameError(message);
-    } 
-    // 기타 오류 처리
-    else {
-      setError(message);
     }
   };
 
@@ -288,8 +271,6 @@ const SignUp: React.FC = () => {
               {nicknameError && <div className={errorText}>{nicknameError}</div>}
             </div>
           )}
-
-          {error && <div className={errorText}>{error}</div>}
 
           <button 
             type="submit" 
