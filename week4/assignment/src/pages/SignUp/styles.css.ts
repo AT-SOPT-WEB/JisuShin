@@ -39,6 +39,12 @@ export const input = style({
   fontSize: '16px',
 });
 
+export const inputLabel = style({
+  fontSize: '16px',
+  fontWeight: 'bold',
+  marginBottom: '8px',
+});
+
 export const button = style({
   width: '100%',
   padding: '12px',
