@@ -15,33 +15,29 @@ interface MyInfoProps {
 const MyInfo: React.FC<MyInfoProps> = ({ nickname, onUpdateNickname }) => {
   const [newNickname, setNewNickname] = useState(nickname);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (!newNickname.trim()) {
-      setError('닉네임을 입력해주세요.');
+      alert('닉네임을 입력해주세요.');
       return;
     }
     
     try {
       setLoading(true);
-      setError('');
-      setSuccess('');
       
       const response = await updateNickname({ nickname: newNickname });
       
       if (response.success) {
-        setSuccess('닉네임이 성공적으로 변경되었습니다.');
+        alert('닉네임이 성공적으로 변경되었습니다.');
         onUpdateNickname(newNickname);
       } else {
-        setError(response.message);
+        alert(response.message || '닉네임 변경에 실패했습니다.');
       }
     } catch (error: any) {
       console.error('Failed to update nickname:', error);
-      setError(error.response?.data?.message || '닉네임 변경 중 오류가 발생했습니다.');
+      alert(error.response?.data?.message || '닉네임 변경 중 오류가 발생했습니다.');
     } finally {
       setLoading(false);
     }
@@ -64,9 +60,6 @@ const MyInfo: React.FC<MyInfoProps> = ({ nickname, onUpdateNickname }) => {
           />
         </div>
 
-        {error && <p style={{ color: 'red', marginBottom: '15px' }}>{error}</p>}
-        {success && <p style={{ color: 'green', marginBottom: '15px' }}>{success}</p>}
-        
         <button 
           type="submit" 
           disabled={loading}
