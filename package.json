@@ -4,7 +4,10 @@
     "tailwindcss": "^4.1.5"
   },
   "dependencies": {
+    "@tanstack/react-query": "^5.76.1",
     "autoprefixer": "^10.4.21",
+    "axios": "^1.9.0",
     "postcss": "^8.5.3"
-  }
+  },
+  "packageManager": "yarn@4.5.3+sha512.3003a14012e2987072d244c720506549c1aab73ee728208f1b2580a9fd67b92d61ba6b08fe93f6dce68fd771e3af1e59a0afa28dd242dd0940d73b95fedd4e90"
 }
